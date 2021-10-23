@@ -5,7 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 const accountSid = "AC0b45470f1e594b28e20b952e23ab4603";
-const authToken = "46b6f50ee90c6b5d0fe11d1af1498797";
+const authToken = "ce37c0ac370bf5390878315b890bbae1";
 const client = require('twilio')(accountSid, authToken);
 
 app.use(express.json());
@@ -29,8 +29,32 @@ app.post('/groupcreation/', (req, res, next) => {
         "ingredients": []
     }
     
+    // create unique url
+
     // send group creation text to members of food night
-})
+    
+    // 
+});
+
+// get all recipe names
+app.get('/api/recipes', (req, res) => {
+    const recipes = databases["recipes"];
+    let recipe_names = [];
+    recipes.forEach(r => {
+        recipe_names.push(r.name);
+    });
+    res.json({"recipes": recipe_names});
+});
+
+// unique url and recipe selection
+app.get('/uniqueurl/', (req, res) => {
+    
+});
+
+app.post('/uniqueurl', (req, res) => {
+    const data = req.body(); // json response
+    
+});
 
 /**
  * const numbers = ["2066437582", "4252733269", "4256589553"]
@@ -70,16 +94,7 @@ app.listen(PORT, () => {
  *          }
  *      ]
  *  
- * recipe: - static
- *      recipeName: string - pk
- *      image: string -- url to image
- *      desc: string
- *      ingredients: [
- *          {
- *              name: string
- *              image: blob (or url)
- *          }
- *      ]
+ * 
  */
 
 let databases = {
