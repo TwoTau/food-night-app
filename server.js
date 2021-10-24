@@ -48,11 +48,8 @@ app.post('/groupcreation/', (req, res, next) => {
 	const url = `${domain}/party/${groupID}/recipes`;
 
 	// send group creation text to members of the group
-	sendSMS(
-		members,
-		`You have been invited to ${formdata['partyName']} happening on ${formdata['datetime']}!\n
-    \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}`
-	);
+    sendSMS(members, `Welcome to ChickenTinder, we're lucky to have you. You have been invited to ${formdata["partyName"]} happening on ${formdata["datetime"]}!\n
+    \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}`);
 
 	// TODO: send group creation email to the members of the group
 });
@@ -132,54 +129,21 @@ app.post('/party/:groupID/recipes', (req, res) => {
 	});
 	group['ingredients'] = ingredientList;
 
-	const url = `${domain}/party/${groupID}/ingredients/`;
-
-	sendSMS(
-		group.members,
-		`The votes are in and you have decided to make ${max_recipe}! But before your fun food adventure can begin, we need a little more information from you!
-    Please navigate to the following link and distribute the recipe ingredients to truly get your party started: ${url}`
-	);
-});
-
-app.get('/party/:groupID/ingredients', (req, res) => {
-	// serve ingredients page to the user
-});
-
-app.post('/party/:groupID/ingredients', (req, res) => {
-	const groupID = req.params.groupID;
-	const data = res.body();
-
-	// get group
-	let group = null;
-	// find group
-	for (let i = 0; i < databases.groups.length; i++) {
-		if (groupID === databases.groups[i].groupID) {
-			group = databases.groups[i];
-			break;
-		}
-	}
-
-	group.ingredients = data['ingredients'];
-
-	// check if ingredients completed
-	for (let i = 0; i < group.ingredients.length; i++) {
-		if (group.ingredients[i] === null) {
-			return;
-		}
-	}
+	const url = `${domain}/party/${groupID}/invite/`;
 
 	// all ingredients distributed - send texts
-	let msg = `The recipe is chosen, the ingredients distributed, and the party is about to start. \n
-    \n            
-    Please refer below for who is bringing what:\n`;
+    let msg = `The recipe is chosen and the party is about to start.
+    \n Please refer to the invite link to sign up to bring ingredients: ${url}\n
+    \nHave a great food night and thank you for using ChickenTinder!`;
 
-	group.ingredients.forEach((i) => {
-		msg += `\t${i.name}: ${i.bringer}\n`;
-	});
+    sendSMS(group.members, msg);
+});
 
-	msg += '\nHave a great food night!';
+// requires page will make 2 calls,
+//      1. /:groupID/finalinvite for party information
+//      2. /recipe?recipe_name=<name> for recipe information
+app.get("/party/:groupID/invite/", (req, res) => {
 
-	sendSMS(group.members, msg);
 });
 
 ////////////////////////////// API /////////////////////////////////////
@@ -269,6 +233,7 @@ io.on('connection', (socket) => {
 
     socket.on('edit', (data) => {
         io.to(groupID).emit('edit', { ingredient: data.ingredient, content: data.content });
+        // set 
     });
 
     socket.on('textbox_select', (data) => {
