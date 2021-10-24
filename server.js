@@ -3,6 +3,8 @@ const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
+const path = require('path');
+
 const app = express();
 const PORT = process.env.PORT || 8000;
 const server = require('http').createServer(app);
