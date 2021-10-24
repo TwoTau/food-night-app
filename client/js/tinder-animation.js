@@ -5,7 +5,6 @@ const nope = document.getElementById('nope');
 const love = document.getElementById('love');
 const dietaryRestriction = document.getElementById('dietary-restriction');
 
-const groupID = 'ID_REPLACED_BY_EXPRESS';
 const base_url = `https://localhost:8000`;
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -13,14 +12,11 @@ const memberName = urlParams.get('member');
 let recipes = [];
 
 let allCards = [];
-pageInit();
-function pageInit() {
-	addCard().then(() => { // wait for addCard async function that fetches recipe JSON
-		initCards();
-		allCards = document.querySelectorAll('.tinder--card');
-		setupSwipe();
-	});
-}
+addCard().then(() => { // wait for addCard async function that fetches recipe JSON
+  initCards();
+  allCards = document.querySelectorAll('.tinder--card');
+  setupSwipe();
+});
 
 function initCards(card, index) {
 	var newCards = document.querySelectorAll('.tinder--card:not(.removed)');
@@ -31,7 +27,39 @@ function initCards(card, index) {
 		card.style.opacity = (10 - index) / 10;
 	});
 
+  if (!newCards.length) {
+    document.getElementById("restart").style.visibility = "visible";
+    document.getElementById("complete").style.visibility = "visible";
+  } else {
+    document.getElementById("restart").style.visibility = "hidden";
+    document.getElementById("complete").style.visibility = "hidden";
+  }
+
 	tinderContainer.classList.add('loaded');
+}
+
+function resetState() {
+  allCards.forEach(c => {
+    c.classList.remove("removed");
+  });
+  initCards();
+}
+
+async function submitResponse() {
+  const json = JSON.stringify({'responses': recipes});
+  const response = await fetch(`/party/${groupID}/recipes?` + new URLSearchParams({
+    member: memberName
+  }), {
+		method: 'POST',
+		mode: 'cors',
+		cache: 'no-cache',
+		credentials: 'same-origin',
+		headers: {
+			'Content-Type': 'application/json'
+		},
+		body: json,
+	});
+	console.log('Response', await response.json());
 }
 
 async function addCard() {
@@ -72,8 +100,10 @@ async function addCard() {
 			</div>`;
 			document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', foodHTML);
 		}
-		const restartButton = `<button class="button-red" id = "restart" style = "margin-left: 10px;" onclick = "pageInit()">Restart?</button>`;
+		const restartButton = `<button class="button-red" id = "restart" style = "margin-left: 10px; visibility:hidden" onclick = "resetState()">Restart?</button>`;
+    const completeButton = `<button class="button-red" id = "complete" style = "margin-left: 10px; visibility:hidden" onclick = "submitResponse()">Complete!</button>`;
 		document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', restartButton);
+    document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', completeButton);
 	} catch (error) {
 		console.error('There was an error.', error);
 	}

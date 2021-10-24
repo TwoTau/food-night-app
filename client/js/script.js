@@ -27,7 +27,7 @@ function parseForm() {
 	const partyName = document.getElementById('party-name').value;
 	if (!partyName || !date || !time) {
 		alert('Fields not filled out. Aborting');
-		return;
+		return null;
 	}
 	return {
 		partyName,
@@ -43,18 +43,32 @@ function parseForm() {
 // handle create party button
 document.querySelector('.create-party').addEventListener('click', async () => {
 	const parsed = parseForm();
-	const json = JSON.stringify(parsed);
-	console.log(parsed, json);
+	if (parsed !== null) {
+		const json = JSON.stringify(parsed);
+		console.log(parsed, json);
 
-	const response = await fetch('/groupcreation/', {
-		method: 'POST',
-		mode: 'cors',
-		cache: 'no-cache',
-		credentials: 'same-origin',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: json,
-	});
-	console.log('Response', await response.json());
+		const response = await fetch('/groupcreation/', {
+			method: 'POST',
+			mode: 'cors',
+			cache: 'no-cache',
+			credentials: 'same-origin',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: json,
+		});
+		console.log('Response', await response.json());		
+	}	
+	showPopUp();
+	setTimeout(() => {hidePopUp()}, 2500);
 });
+
+function showPopUp() {
+	document.querySelector('#pop-up').style.visibility = "visible";
+	document.querySelector('#pop-up').style.display = "block";
+}
+
+function hidePopUp() {
+	document.querySelector('#pop-up').style.visibility = "hidden";
+	document.querySelector('#pop-up').style.display = "none";
+}

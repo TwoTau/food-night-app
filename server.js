@@ -4,6 +4,7 @@ const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
 const path = require('path');
+const { json } = require('express');
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -56,10 +57,10 @@ app.post('/groupcreation/', (req, res, next) => {
 
 	// send group creation text to members of the group
     for (let i = 0; i < formdata.members.length; i++) {
-        sendIndividualSMS(formdata.members[i], `Hi ${formdata.members[i].name}, welcome to ChickenTinder, we're lucky to have you! You have been invited to ${formdata["partyName"]} happening on ${formdata["date"]}!\n
+        sendIndividualSMS(formdata.members[i], `\nHi ${formdata.members[i].name}, welcome to ChickenTinder, we're lucky to have you! You have been invited to ${formdata["partyName"]} happening on ${formdata["date"]}!\n
         \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}?member=${formdata.members[i].name.replaceAll(" ", "%20")}`);
         
-        sendIndividualEmail(formdata.members[i], `Hi ${formdata.members[i].name}, welcome to ChickenTinder, we're lucky to have you! You have been invited to ${formdata["partyName"]} happening on ${formdata["date"]}!\n
+        sendIndividualEmail(formdata.members[i], `\nHi ${formdata.members[i].name}, welcome to ChickenTinder, we're lucky to have you! You have been invited to ${formdata["partyName"]} happening on ${formdata["date"]}!\n
         \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}?member=${formdata.members[i].name.replaceAll(" ", "%20")}`, "ChickenTinder Invite!!");
     }        
 
@@ -82,10 +83,9 @@ app.get('/party/:groupID/recipes', (req, res) => {
 app.post('/party/:groupID/recipes', (req, res) => {    
 	// groupID encoded as url param, member name as query param
 	const groupID = req.params.groupID;
-  const member = req.query.member; // TODO: set front end field
-  console.log(member);
+    const member = req.query.member; // TODO: set front end field    
 
-	const data = res.body();	
+	const data = req.body;	
 	let group = null;
 	// find group
 	for (let i = 0; i < databases.groups.length; i++) {
@@ -100,16 +100,18 @@ app.post('/party/:groupID/recipes', (req, res) => {
 		if (member === group.members[i].name) {
 			// set responses and voting completed flag
 			group.members[i].responses = data['responses'];
-			group.members[i].votingCompleted = data['votingCompleted'];
+			group.members[i].votingCompleted = true;
 		}
 	}
+
+    console.log(`Submitted responses for ${groupID} with name ${member}`);
 
 	// check if all members have finished voting, if yes then send out ingredient distribution link
 	for (let i = 0; i < group.members.length; i++) {
 		if (group.members[i].votingCompleted === false) {
 			return;
 		}
-	}
+	}    
 
 	// tabulate results and send link to ingredient distribution with recipe
 	let vote_count = new Map();
@@ -118,8 +120,8 @@ app.post('/party/:groupID/recipes', (req, res) => {
 		vote_count.set(r, 0);
 	});
 
-	for (let i = 0; i < group.members.length; i++) {
-		for (let j = 0; recipes.length; j++) {
+	for (let i = 0; i < group.members.length; i++) {        
+		for (let j = 0; j < recipes.length; j++) {
 			if (vote_count.has(recipes[j])) {
 				if (group.members[i].responses[j] === 1) {
 					vote_count.set(recipes[j], vote_count.get(recipes[j]) + 1);
@@ -142,21 +144,33 @@ app.post('/party/:groupID/recipes', (req, res) => {
 	// set recipe and ingredients list in group and send out ingredient distribution
 	group['recipe'] = max_recipe;
 
-	let ingredientList = [];
-	const ingredients = databases['recipes'].ingredients;
+    const recipesdb = databases['recipes'];
+	let recipe = null;
+	for (let i = 0; i < recipesdb.length; i++) {
+		if (group.recipe === recipesdb[i].recipe_name) {
+			recipe = recipesdb[i];
+            break;
+		}
+	}
+
+	let ingredientList = [];    
+	const ingredients = recipe.ingredients;
 	ingredients.forEach((i) => {
 		ingredientList = [...ingredientList, { name: i.name, image: i.image, bringer: null }];
-	});
+	});    
 	group['ingredients'] = ingredientList;
 
-	const url = `${domain}/party/${groupID}/invite/`;
-
-	// all ingredients distributed - send texts
-    let msg = `The recipe is chosen and the party is about to start.
-    \n Please refer to the invite link to sign up to bring ingredients: ${url}\n
-    \nHave a great food night and thank you for using ChickenTinder!`;
-
-    sendSMS(group.members, msg);
+	const url = `${domain}/party/${groupID}/invite/?member=`;	
+    console.log(max_recipe);
+    for (let i = 0; i < group.members.length; i++) {
+        // all ingredients distributed - send texts
+        let msg = `\nThe recipe is chosen and the party is about to start.
+        \n Please refer to the invite link to sign up to bring ingredients: ${url}${group.members[i].name.replaceAll(" ", "%20")}\n
+        \nHave a great food night and thank you for using ChickenTinder!`;
+        sendIndividualSMS(group.members[i], msg);
+        
+        sendIndividualEmail(group.members[i], msg, `${group.partyName} Event Page`);
+    }      
 });
 
 // requires page will make 2 calls,
@@ -164,6 +178,7 @@ app.post('/party/:groupID/recipes', (req, res) => {
 //      2. /api/recipe?recipe_name=<name> for recipe information
 app.get("/party/:groupID/invite/", (req, res) => {
 	const groupID = req.params.groupID;
+    const member = req.query.member;
     let group = null;
 	// find group
 	for (let i = 0; i < databases.groups.length; i++) {
@@ -188,6 +203,7 @@ app.get("/party/:groupID/invite/", (req, res) => {
 		}
 	}
 
+    html = html.replaceAll('NAME_REPLACED_BY_EXPRESS', member);
     html = html.replaceAll('RECIPE_DESCRIPTION', recipe.description);
     html = html.replaceAll('IMAGE_SOURCE', recipe.image_url);
 	res.send(html);
@@ -383,20 +399,20 @@ let databases = {
 					responses: [],
 					votingCompleted: false,
 				},
-				{
-					name: 'allan dao',
-					phone: '2066437582',
-					email: 'allandao@uw.edu',
-					responses: [],
-					votingCompleted: false,
-				},
-				{
-					name: 'vishal devireddy',
-					phone: '4254991077',
-					email: 'vishal@uw.edu',
-					responses: [],
-					votingCompleted: false,
-				},
+				// {
+				// 	name: 'allan dao',
+				// 	phone: '2066437582',
+				// 	email: 'allandao@uw.edu',
+				// 	responses: [],
+				// 	votingCompleted: false,
+				// },
+				// {
+				// 	name: 'vishal devireddy',
+				// 	phone: '4254991077',
+				// 	email: 'vishal@uw.edu',
+				// 	responses: [],
+				// 	votingCompleted: false,
+				// },
 			],
 			recipe: 'Classic Hamburger',
 			ingredients: [],
