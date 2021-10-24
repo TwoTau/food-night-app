@@ -9,8 +9,9 @@ const uniforms = {
 	metaball: 1,
 	discard_threshold: 0.5,
 	antialias_threshold: 0.001,
-	noise_height: 0.5,
-	noise_scale: 3,
+	noise_height: 0.2,
+	noise_scale: 2,
+	x_value: 1.,
 };
 
 // makes sure the canvas is fit to the window
@@ -60,6 +61,8 @@ function setup3d() {
 
 function update(time) {
 	uniforms.time = time / 1000;
+
+	// uniforms.x_value = Math.max(1, 4 - time / 1000);
 
 	gl.useProgram(programInfo.program);
 	twgl.setBuffersAndAttributes(gl, programInfo, bufferInfo);
