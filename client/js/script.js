@@ -13,6 +13,13 @@ function addFriend() {
 addFriend(); // add first friend
 addFriendButton.addEventListener('click', addFriend);
 
+// remove friend buttons
+document.querySelector('.party-members').addEventListener('click', (e) => {
+	if (e.target.classList.contains('remove-friend')) {
+		e.target.parentElement.remove();
+	}
+});
+
 // parse form into data Object. TODO: error handling and empty field handling
 function parseForm() {
 	return {
@@ -26,13 +33,6 @@ function parseForm() {
 		})),
 	};
 }
-
-// remove friend buttons
-document.querySelector('.party-members').addEventListener('click', (e) => {
-	if (e.target.classList.contains('remove-friend')) {
-		e.target.parentElement.remove();
-	}
-});
 
 // handle create party button
 document.querySelector('.create-party').addEventListener('click', () => {

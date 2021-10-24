@@ -13,27 +13,31 @@
 html {
 	font-size: 18px;
 }
+
 body {
 	background: var(--background);
 	font-family: 'Baloo Da 2', sans-serif;
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: center;
-	gap: 100px;
+	gap: 240px;
 }
 
 h1, h2, h3, h4, h5, h6 {
 	font-family: 'Baloo Paaji 2', sans-serif;
 }
+
 label {
 	font-weight: bold;
 }
+
 input {
 	font: inherit;
 	background: inherit;
 	padding: 6px 12px;
 	border: 2px solid var(--accent-dark);
 }
+
 button {
 	cursor: pointer;
 	font: inherit;
@@ -42,23 +46,26 @@ button {
 }
 
 .intro {
-	background: var(--accent);
+	/* background: var(--accent); */
 	color: var(--background);
 	max-width: 600px;
 	font-weight: bold;
 	letter-spacing: 0.2px;
 	padding: 48px;
 }
+
 .header {
 	font-size: 4rem;
 }
+
 .description {
 	margin-top: -12px;
 	margin-bottom: 24px;
 }
+
 .intro-image {
 	width: 100%;
-	max-width: 450px;
+	max-width: 400px;
 	border-radius: 48px;
 }
 
@@ -67,10 +74,12 @@ button {
 	color: var(--accent);
 	max-width: 900px;
 }
+
 .group-creation h2 {
 	font-size: 2.5rem;
 	text-align: right;
 }
+
 .group-creation h3 {
 	font-size: 1.5rem;
 	text-align: right;
@@ -80,21 +89,26 @@ button {
 	width: 500px;
 	float: right;
 }
+
 .date-time-wrapper {
 	display: flex;
 	flex-flow: row wrap;
 	gap: 18px;
 }
+
 .date-time-wrapper .input-wrapper {
 	flex: 1;
 }
+
 .input-wrapper {
 	margin-bottom: 18px;
 }
-.input-wrapper > *{
+
+.input-wrapper>* {
 	display: block;
 	width: 100%;
 }
+
 .input-wrapper input {
 	color: var(--accent-dark);
 }
@@ -103,6 +117,7 @@ button {
 	margin-top: 36px;
 	clear: both;
 }
+
 .party-members input {
 	border-width: 0;
 	border-bottom-width: 2px;
@@ -110,6 +125,7 @@ button {
 	padding-bottom: 0;
 	margin-bottom: 8px;
 }
+
 .add-friend {
 	color: orange;
 	font-weight: bold;
@@ -123,4 +139,12 @@ button {
 	font-weight: bold;
 	color: var(--background);
 	float: right;
+}
+
+canvas {
+	display: block;
+	position: absolute;
+	z-index: -1;
+	top: 0;
+	left: 0;
 }
