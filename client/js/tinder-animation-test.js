@@ -72,7 +72,8 @@ async function addCard() {
 }
 
 function setupSwipe() {
-	allCards.forEach(function (el) {
+	for (let i = 0; i < allCards.length; i++) {
+		let el = allCards[i];
 		var hammertime = new Hammer(el);
 
 		hammertime.on('pan', function (event) {
@@ -124,7 +125,7 @@ function setupSwipe() {
 				initCards();
 			}
 		});
-	});
+	}
 }
 
 
@@ -145,6 +146,8 @@ function createButtonListener(love) {
 			card.style.transform = 'translate(-' + moveOutWidth + 'px, -100px) rotate(30deg)';
 		}
 
+		recipes[card.getAttribute("index")] = (love) ? 1 : 0; // right : left
+		console.log(recipes);
 		initCards();
 
 		event.preventDefault();
