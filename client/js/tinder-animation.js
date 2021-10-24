@@ -83,7 +83,6 @@ function hidePopUp() {
 }
 
 async function addCard() {
-	// const url = 'https://food-night-app.herokuapp.com/api/recipes';
 	const url = 'https://chicken-tinder-dubhacks.herokuapp.com/api/recipes';
 
 	try {
@@ -98,7 +97,7 @@ async function addCard() {
 			throw error;
 		}
 
-		// Missing ability to show all ingredients
+		// Following tidbit is missing ability to show all ingredients
 		// const foodHTML = data.recipes.map((recipe) =>
 		// 	`<div class="tinder--card">
 		// 		<div style="background-image:url(${recipe.image_url})"></div>
@@ -107,6 +106,7 @@ async function addCard() {
 		// 	</div>`
 		// ).join('');
 		// document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', foodHTML);
+		// Create Tinder cards via provided recipe data
 		for (let i = 0; i < data.recipes.length; i++) {
 			recipes = [...recipes, 0];
 			const foodHTML = `<div class="tinder--card" index=${i}>

@@ -32,7 +32,7 @@ function parseForm() {
 	const time = document.getElementById('time').value;
 	const partyName = document.getElementById('party-name').value;
 	if (!partyName || !date || !time) {
-		alert('Fields not filled out. Aborting');
+		alert('There are fields not filled out. Please make sure to add in all of the details for your party!');
 		return null;
 	}
 	return {
