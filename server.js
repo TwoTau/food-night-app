@@ -31,6 +31,7 @@ const mail = nodemailer.createTransport({
 app.post('/groupcreation/', (req, res, next) => {
 	const formdata = req.body;	
 	for (let member of formdata.members) {
+        member.phone = member.phone.replaceAll("-", "");
 		member.response = [];
 		member.votingCompleted = false;
 	}
@@ -40,7 +41,7 @@ app.post('/groupcreation/', (req, res, next) => {
 	let newGroup = {
 		groupID: groupID,
 		partyName: formdata['partyName'],
-		datetime: formdata['datetime'],
+		datetime: formdata['date'],
 		members: formdata.members,
 		recipe: '',
 		ingredients: [],
@@ -52,13 +53,15 @@ app.post('/groupcreation/', (req, res, next) => {
 	const url = `${domain}/party/${groupID}/recipes`;
 
 	// send group creation text to members of the group
-    sendSMS(members, `Welcome to ChickenTinder, we're lucky to have you. You have been invited to ${formdata["partyName"]} happening on ${formdata["datetime"]}!\n
-    \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}`);
+    for (let i = 0; i < formdata.members.length; i++) {
+        sendIndividualSMS(formdata.members[i], `Hi ${formdata.members[i].name}, welcome to ChickenTinder, we're lucky to have you! You have been invited to ${formdata["partyName"]} happening on ${formdata["date"]}!\n
+        \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}`);
+    }    
 	
-    sendEmail(members, `Welcome to ChickenTinder, we're lucky to have you. You have been invited to ${formdata["partyName"]} happening on ${formdata["datetime"]}!\n
+    sendEmail(formdata.members, `Welcome to ChickenTinder, we're lucky to have you. You have been invited to ${formdata["partyName"]} happening on ${formdata["datetime"]}!\n
     \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}`, "ChickenTinder Invite!!");
 
-	console.log(`Created group ${groupID} with name "${newGroup.partyName}" and ${members.length} members`);
+	console.log(`Created group ${groupID} with name "${newGroup.partyName}" and ${formdata.members.length} members`);
 	res.json({
 		id: groupID,
 	})
@@ -66,10 +69,14 @@ app.post('/groupcreation/', (req, res, next) => {
 	// TODO: send group creation email to the members of the group
 });
 
+
+const recipesHtmlPath = path.resolve(__dirname + '/client/select-food-copy.html');
+let recipesHtmlContent = fs.readFileSync(recipesHtmlPath, 'utf8');
+
 // unique url and recipe selection
 app.get('/party/:groupID/recipes', (req, res) => {
-	const groupID = req.params.groupID;
-	// send react compiled page
+  const groupID = req.params.groupID;
+  res.send(recipesHtmlContent.replace('ID_REPLACED_BY_EXPRESS', groupID));
 });
 
 app.post('/party/:groupID/recipes', (req, res) => {
@@ -336,28 +343,28 @@ let databases = {
 			members: [
 				{
 					name: 'jiamae wang',
-					phonenumber: '4256589553',
+					phone: '4256589553',
 					email: 'jiamae@uw.edu',
 					responses: [],
 					votingCompleted: false,
 				},
 				{
 					name: 'johnson kuang',
-					phonenumber: '4252733269',
+					phone: '4252733269',
 					email: 'jkuang7@uw.edu',
 					responses: [],
 					votingCompleted: false,
 				},
 				{
 					name: 'allan dao',
-					phonenumber: '2066437582',
+					phone: '2066437582',
 					email: 'allandao@uw.edu',
 					responses: [],
 					votingCompleted: false,
 				},
 				{
 					name: 'vishal devireddy',
-					phonenumber: '4254991077',
+					phone: '4254991077',
 					email: 'vishal@uw.edu',
 					responses: [],
 					votingCompleted: false,
@@ -385,10 +392,20 @@ function sendSMS(members, msg) {
 			.create({
 				body: msg,
 				from: '+19857773832',
-				to: `+1${members[i]['phonenumber']}`, // replace with receiver phone #
+				to: `+1${members[i]['phone']}`, // replace with receiver phone #
 			})
 			.then((message) => console.log(message.sid));
 	}
+}
+
+function sendIndividualSMS(member, msg) {
+    client.messages
+			.create({
+				body: msg,
+				from: '+19857773832',
+				to: `+1${member['phone']}`, // replace with receiver phone #
+			})
+			.then((message) => console.log(message.sid));
 }
 
 function sendEmail(members, msg, subject) {    
