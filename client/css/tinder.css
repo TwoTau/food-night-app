@@ -12,6 +12,7 @@
 	--accent-dark: #900C3F;
 }
 
+
 body {
 	background: var(--background);
 	font-family: 'Baloo Da 2', sans-serif;
@@ -31,6 +32,22 @@ body {
 	position: relative;
 	opacity: 0;
 	transition: opacity 0.1s ease-in-out;
+}
+
+.header {
+	text-align: left;
+	margin-left: 50px;
+	color: var(--background);
+}
+
+.description {
+	text-align: right;
+	margin-left: 65%;
+	margin-top: -100px;
+	color: var(--accent);
+	font-weight: bolder;
+	letter-spacing: 0.2px;
+	max-width: 600px;
 }
 
 .loaded.tinder {
@@ -78,12 +95,13 @@ body {
 }
 
 .tinder--card {
-	display: inline-block;
-	width: 90vw;
-	max-width: 600px;
+	display: flex;
+	flex-direction: row;
+	width: 150vw;
+	max-width: 1200px;
 	height: 65vh;
 	background: #ffffff;
-	padding-bottom: 40px;
+	padding-right: 300px;
 	border-radius: 14px;
 	overflow: hidden;
 	position: absolute;
@@ -104,26 +122,39 @@ body {
 .tinder--card div { /* Background image for cards */
 	min-width: 100%;
 	height: 100%;
-	max-height: 70%;
 	background-size: cover;
 	background-position: 0px -30px;
 	pointer-events: none;
 	overflow: hidden;
 	background-repeat: no-repeat;
+	text-align: left;
+}
+
+.text-div {
+	display: flex;
+	flex-direction: column;
+	margin-left: 20px;
+	margin-top: 30px;
 }
 
 .tinder--card h3 {
-	margin-top: 5px;
 	font-size: 32px;
-	padding: 0 16px;
 	pointer-events: none;
+	max-width: 300px;
+}
+.tinder--card h4 {
+	margin-top: 20px;
+	pointer-events: none;
+	max-width: 250px;
+	font-size: 22px;
+	line-height: 110%;
 }
 
 .tinder--card p {
 	margin-top: 24px;
 	font-size: 20px;
-	padding: 0 16px;
 	pointer-events: none;
+	max-width: 250px;
 }
 
 .tinder--buttons {

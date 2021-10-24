@@ -67,8 +67,11 @@ async function addCard() {
 			}
 			const foodHTML = `<div class="tinder--card" index=${i}>
 				<div style="background-image:url(${data.recipes[i].image_url})"></div>
-				<h3>${data.recipes[i].recipe_name}</h3>
-				<p>${ingredients}</p>
+				<div class="text-div">
+					<h3>${data.recipes[i].recipe_name}</h3>
+					<h4>${data.recipes[i].description}</h4>
+					<p>Ingredients: ${ingredients}</p>
+				</div>
 			</div>`;
 			document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', foodHTML);
 		}
