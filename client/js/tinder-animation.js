@@ -30,9 +30,15 @@ function initCards(card, index) {
   if (!newCards.length) {
     document.getElementById("restart").style.visibility = "visible";
     document.getElementById("complete").style.visibility = "visible";
+
+    nope.disabled = true;
+    love.disabled = true;
   } else {
     document.getElementById("restart").style.visibility = "hidden";
     document.getElementById("complete").style.visibility = "hidden";
+
+    nope.disabled = false;
+    love.disabled = false;
   }
 
 	tinderContainer.classList.add('loaded');
@@ -91,7 +97,7 @@ async function addCard() {
 			let ingredients = data.recipes[i].ingredients[0].name;
 			recipes = [...recipes, 0];
 			for (let j = 1; j < data.recipes[i].ingredients.length; j++) {
-				ingredients += ", " + data.recipes[i].ingredients[j].name;				
+				ingredients += ", " + data.recipes[i].ingredients[j].name.toLowerCase();				
 			}
 			const foodHTML = `<div class="tinder--card" index=${i}>
 				<div style="background-image:url(${data.recipes[i].image_url})"></div>
@@ -103,7 +109,7 @@ async function addCard() {
 			</div>`;
 			document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', foodHTML);
 		}
-		const restartButton = `<button class="button-red" id = "restart" style = "margin-left: 10px; visibility:hidden" onclick = "resetState()">Restart?</button>`;
+		const restartButton = `<button class="button-red" id = "restart" style = "margin-left: 10px; visibility:hidden" onclick = "resetState()">Rematch?</button>`;
     const completeButton = `<button class="button-red" id = "complete" style = "margin-left: 10px; visibility:hidden" onclick = "submitResponse()">Complete!</button>`;
 		document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', restartButton);
     document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', completeButton);
