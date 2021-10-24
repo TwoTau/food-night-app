@@ -69,7 +69,7 @@ app.post('/party/:groupID/recipes', (req, res) => {
 
     const data = res.body();
     const member = data["member"]; // TODO: set front end field
-    const group = null;
+    let group = null;
     // find group
     for (let i = 0; i < databases.groups.length; i++) {
         if (groupID === databases.groups[i].groupID) {
@@ -155,7 +155,7 @@ app.post("/party/:groupID/ingredients", (req, res) => {
     const data = res.body();
     
     // get group
-    const group = null;
+    let group = null;
     // find group
     for (let i = 0; i < databases.groups.length; i++) {
         if (groupID === databases.groups[i].groupID) {
@@ -227,7 +227,7 @@ app.get('/api/recipe', (req, res) => {
 // get the ingredients associated with recipe chosen by group with id groupID
 app.get('/api/:groupID/ingredients', (req, res) => {
     const groupID = req.params.groupID;
-    const group = null;
+    let group = null;
     // find group
     for (let i = 0; i < databases.groups.length; i++) {
         if (groupID === databases.groups[i].groupID) {
@@ -242,7 +242,7 @@ app.get('/api/:groupID/ingredients', (req, res) => {
 // get final invite information
 app.get('/api/:groupID/finalinvite', (req, res) => {
     const groupID = req.params.groupID;
-    const group = null;
+    let group = null;
     // find group
     for (let i = 0; i < databases.groups.length; i++) {
         if (groupID === databases.groups[i].groupID) {
@@ -301,9 +301,47 @@ app.get('/test/', (req, res) => {
 	res.send(databases);
 });
 
+const test = new Date(2021, 9, 23, 11, 00, 0);
+
 let databases = {
 	groups: [
 		// push new groups into group id
+        {
+            groupID: "123",
+            datetime: test.toString(),
+            members: [
+                {
+                    name: "jiamae wang",
+                    phonenumber: "4256589553",
+                    email: "jiamae@uw.edu",  
+                    responses: [],
+                    votingCompleted: false              
+                },
+                {
+                    name: "johnson kuang",
+                    phonenumber: "4252733269",
+                    email: "jkuang7@uw.edu",        
+                    responses: [],
+                    votingCompleted: false        
+                },
+                {
+                    name: "allan dao",
+                    phonenumber: "2066437582",
+                    email: "allandao@uw.edu",   
+                    responses: [],
+                    votingCompleted: false             
+                },
+                {
+                    name: "vishal devireddy",
+                    phonenumber: "4254991077",
+                    email: "vishal@uw.edu",   
+                    responses: [],
+                    votingCompleted: false             
+                }
+            ],
+            "recipe": "",
+            "ingredients": []
+        }
 	],
 	recipes: JSON.parse(fs.readFileSync('recipes.json', 'utf-8'))["recipes"]
 };
