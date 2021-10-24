@@ -9,6 +9,7 @@ const base_url = `https://localhost:8000`;
 
 const urlParams = new URLSearchParams(window.location.search);
 const memberName = urlParams.get('member');
+
 let recipes = [];
 
 let allCards = [];
@@ -51,9 +52,11 @@ function resetState() {
   initCards();
 }
 
-async function submitResponse() {
+async function submitResponse() {  	
+  document.getElementById("restart").style.visibility = "hidden";
+  document.getElementById("complete").style.visibility = "hidden";
   const json = JSON.stringify({'responses': recipes});
-  const response = await fetch(`/party/${groupID}/recipes?` + new URLSearchParams({
+  const response = fetch(`/party/${groupID}/recipes?` + new URLSearchParams({
     member: memberName
   }), {
 		method: 'POST',
@@ -64,8 +67,22 @@ async function submitResponse() {
 			'Content-Type': 'application/json'
 		},
 		body: json,
-	});
-	console.log('Response', await response.json());
+	});	
+  showPopUp();
+  setTimeout(() => {hidePopUp()}, 2500);
+}
+
+function showPopUp() {
+	document.getElementById('pop-up').style.visibility = "visible";
+	document.getElementById('pop-up').style.display = "block";
+}
+
+function hidePopUp() {
+	document.getElementById('pop-up').style.visibility = "hidden";
+	document.getElementById('pop-up').style.display = "none";
+  location.href = `/party/${groupID}/invite?` + new URLSearchParams({
+    member: memberName
+  });
 }
 
 async function addCard() {

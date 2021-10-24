@@ -161,7 +161,7 @@ app.post('/party/:groupID/recipes', (req, res) => {
 	group['ingredients'] = ingredientList;
 
 	const url = `${domain}/party/${groupID}/invite/?member=`;	
-    console.log(max_recipe);
+    
     for (let i = 0; i < group.members.length; i++) {
         // all ingredients distributed - send texts
         let msg = `\nThe recipe is chosen and the party is about to start.
@@ -176,7 +176,7 @@ app.post('/party/:groupID/recipes', (req, res) => {
 // requires page will make 2 calls,
 //      1. /api/:groupID/finalinvite for party information
 //      2. /api/recipe?recipe_name=<name> for recipe information
-app.get("/party/:groupID/invite/", (req, res) => {
+app.get("/party/:groupID/invite", (req, res) => {
 	const groupID = req.params.groupID;
     const member = req.query.member;
     let group = null;
