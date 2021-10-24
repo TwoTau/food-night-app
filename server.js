@@ -20,7 +20,7 @@ const accountSid = 'AC0b45470f1e594b28e20b952e23ab4603';
 const authToken = 'ce37c0ac370bf5390878315b890bbae1';
 
 const client = require('twilio')(accountSid, authToken);
-const domain = 'http://localhost:8000';
+const domain = 'https://chicken-tinder-dubhacks.herokuapp.com';
 
 app.use(cors());
 
