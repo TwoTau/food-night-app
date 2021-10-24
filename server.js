@@ -11,20 +11,15 @@ const client = require('twilio')(accountSid, authToken);
 
 app.use(express.json());
 
-app.use(express.static('public'));
+app.use(express.static('client'));
 
-// configure static landing files
-app.use('/css', express.static(__dirname + '/public/css'));
-app.use('/js', express.static(__dirname + '/public/js'));
-app.use('/images', express.static(__dirname + '/public/images'));
+// app.get('/', (req, res) => {
+// 	// landing page
+// });
 
-app.get('/', (req, res) => {
-	// landing page
-});
-
-app.get('/groupcreation/', (req, res) => {
-	// group creation form
-});
+// app.get('/groupcreation/', (req, res) => {
+// 	// group creation form
+// });
 
 app.post('/groupcreation/', (req, res, next) => {
     const formdata = req.body();
