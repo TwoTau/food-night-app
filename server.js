@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const cors = require('cors');
@@ -13,19 +14,6 @@ const domain = "http://localhost:8000";
 app.use(express.json());
 
 app.use(express.static('client'));
-
-// configure static landing files
-app.use('/css', express.static(__dirname + '/public/css'));
-app.use('/js', express.static(__dirname + '/public/js'));
-app.use('/images', express.static(__dirname + '/public/images'));
-
-app.get('/', (req, res) => {
-	// landing page
-});
-
-app.get('/groupcreation/', (req, res) => {
-	// group creation form
-});
 
 app.post('/groupcreation/', (req, res, next) => {
     const formdata = req.body();
