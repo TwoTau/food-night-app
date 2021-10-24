@@ -117,6 +117,7 @@ uniform float discard_threshold;
 uniform float antialias_threshold;
 uniform float noise_height;
 uniform float noise_scale;
+uniform float x_value;
 
 ${noiseGLSL}
 ${hsb2rgbGLSL}
@@ -133,7 +134,8 @@ void main() {
   noise = (noise + 1.) / 2.; // (-1, 1) to (0, 1)
   float val = noise * noise_height; // (0, noise_height)
 
-  val += 1. - pos.x * 2.5;
+  val += 1.5;
+  val -= pos.x * 0.5;
 
 	// float d = distance(mouse, pos); // (0=near, 1=far)
 	// float u = d / (metaball + 0.00001);  // avoid division by 0
@@ -141,7 +143,7 @@ void main() {
 	// mouseMetaball = clamp(1. - mouseMetaball, 0., 1.);
 	// val += mouseMetaball / 4.;
 
-  val += 1. - distance(vec2(0., 0.5), pos) * 1.5;
+  val -= distance(vec2(0., 1. / ar + 0.1), pos) * 1.5;
 
   // antialiasing
   float low = discard_threshold - antialias_threshold;
@@ -153,7 +155,16 @@ void main() {
   vec3 c3 = vec3(255., 87., 51.) / 255.;
   vec3 c4 = vec3(255., 195., 7.) / 255.;
 
-  vec3 color = mix(c2, c3, 1. - gl_FragCoord.y / resolution.y);
+  vec3 color = vec3(0.);
+  float interp = 1. - gl_FragCoord.y / resolution.y;
+
+  if (interp >= 0.66) {
+    color = mix(c3, c4, (interp - 0.66) / 0.33);
+  } else if (interp >= 0.33) {
+    color = mix(c2, c3, (interp - 0.33) / 0.33);
+  } else {
+    color = mix(c1, c2, interp / 0.33);
+  }
 
   gl_FragColor = vec4(vec3(color), alpha);
 }
