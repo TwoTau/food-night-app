@@ -2,6 +2,7 @@
 	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
+	transition: 0.2s ease-out;
 }
 
 :root {
@@ -202,4 +203,14 @@ body {
 .removed {
 	opacity: 0;
 	display: none;
+}
+
+.end-button {
+	font-size: 2rem;
+	border-radius: 24px;
+	padding: 18px 64px;
+	box-shadow: 4.5px -5px 5px -4px rgba(0, 0, 0, 0.1), 12px 4px 14px -4px rgba(0, 0, 0, 0.06), 30px 11px 33px -4px rgba(0, 0, 0, 0.07), 100px 37px 110px -4px rgba(0, 0, 0, 0.07);
+}
+.end-button:first-of-type {
+	margin-right: 64px;
 }

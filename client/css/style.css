@@ -2,6 +2,7 @@
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
+	transition: 0.15s ease-out;
 }
 
 :root {
@@ -47,7 +48,6 @@ button {
 }
 
 .intro {
-	/* background: var(--accent); */
 	color: var(--background);
 	max-width: 600px;
 	font-weight: bold;
@@ -59,8 +59,7 @@ button {
 	font-size: 4rem;
 }
 
-.description {
-	margin-top: -12px;
+.description, .congrats {
 	margin-bottom: 24px;
 }
 
@@ -166,7 +165,7 @@ button {
 	color: var(--background);
 }
 
-.button-red:hover {
+.button-red:hover, .create-party:hover {
 	background: var(--accent-light);
 }
 
@@ -231,4 +230,15 @@ canvas {
 	transform: translate(-50%, -50%);
 	text-align: center;
 	padding: 20px;
+}
+
+.congrats {
+	background: var(--accent);
+	background: linear-gradient(to bottom, #C70039, #FF5733);
+	font-size: 1.1rem;
+	font-weight: bold;
+	color: var(--background);
+	padding: 24px;
+	border-radius: 24px;
+	margin: 24px -24px;
 }

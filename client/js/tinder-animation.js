@@ -120,10 +120,9 @@ async function addCard() {
 			</div>`;
 			document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', foodHTML);
 		}
-		const restartButton = `<button class="button-red" id = "restart" style = "margin-left: 10px; visibility:hidden" onclick = "resetState()">Rematch?</button>`;
-		const completeButton = `<button class="button-red" id = "complete" style = "margin-left: 10px; visibility:hidden" onclick = "submitResponse()">Complete!</button>`;
-		document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', restartButton);
-		document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', completeButton);
+		const restartButton = `<button class="end-button button-red" id="restart" style="visibility:hidden" onclick="resetState()">Swipe again</button>`;
+		const completeButton = `<button class="end-button button-red" id="complete" style="visibility:hidden" onclick="submitResponse()">I'm done swiping</button>`;
+		document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', completeButton + restartButton);
 	} catch (error) {
 		console.error('There was an error.', error);
 	}
