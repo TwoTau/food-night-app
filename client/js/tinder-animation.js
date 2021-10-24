@@ -14,9 +14,9 @@ let recipes = [];
 
 let allCards = [];
 addCard().then(() => { // wait for addCard async function that fetches recipe JSON
-  initCards();
-  allCards = document.querySelectorAll('.tinder--card');
-  setupSwipe();
+	initCards();
+	allCards = document.querySelectorAll('.tinder--card');
+	setupSwipe();
 });
 
 function initCards(card, index) {
@@ -28,37 +28,37 @@ function initCards(card, index) {
 		card.style.opacity = (10 - index) / 10;
 	});
 
-  if (!newCards.length) {
-    document.getElementById("restart").style.visibility = "visible";
-    document.getElementById("complete").style.visibility = "visible";
+	if (!newCards.length) {
+		document.getElementById("restart").style.visibility = "visible";
+		document.getElementById("complete").style.visibility = "visible";
 
-    nope.disabled = true;
-    love.disabled = true;
-  } else {
-    document.getElementById("restart").style.visibility = "hidden";
-    document.getElementById("complete").style.visibility = "hidden";
+		nope.disabled = true;
+		love.disabled = true;
+	} else {
+		document.getElementById("restart").style.visibility = "hidden";
+		document.getElementById("complete").style.visibility = "hidden";
 
-    nope.disabled = false;
-    love.disabled = false;
-  }
+		nope.disabled = false;
+		love.disabled = false;
+	}
 
 	tinderContainer.classList.add('loaded');
 }
 
 function resetState() {
-  allCards.forEach(c => {
-    c.classList.remove("removed");
-  });
-  initCards();
+	allCards.forEach(c => {
+		c.classList.remove("removed");
+	});
+	initCards();
 }
 
-async function submitResponse() {  	
-  document.getElementById("restart").style.visibility = "hidden";
-  document.getElementById("complete").style.visibility = "hidden";
-  const json = JSON.stringify({'responses': recipes});
-  const response = fetch(`/party/${groupID}/recipes?` + new URLSearchParams({
-    member: memberName
-  }), {
+async function submitResponse() {
+	document.getElementById("restart").style.visibility = "hidden";
+	document.getElementById("complete").style.visibility = "hidden";
+	const json = JSON.stringify({ 'responses': recipes });
+	const response = fetch(`/party/${groupID}/recipes?` + new URLSearchParams({
+		member: memberName
+	}), {
 		method: 'POST',
 		mode: 'cors',
 		cache: 'no-cache',
@@ -67,9 +67,9 @@ async function submitResponse() {
 			'Content-Type': 'application/json'
 		},
 		body: json,
-	});	
-  showPopUp();
-  setTimeout(() => {hidePopUp()}, 2500);
+	});
+	showPopUp();
+	setTimeout(() => { hidePopUp() }, 2500);
 }
 
 function showPopUp() {
@@ -108,25 +108,22 @@ async function addCard() {
 		// ).join('');
 		// document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', foodHTML);
 		for (let i = 0; i < data.recipes.length; i++) {
-			let ingredients = data.recipes[i].ingredients[0].name;
 			recipes = [...recipes, 0];
-			for (let j = 1; j < data.recipes[i].ingredients.length; j++) {
-				ingredients += ", " + data.recipes[i].ingredients[j].name.toLowerCase();				
-			}
 			const foodHTML = `<div class="tinder--card" index=${i}>
-				<div style="background-image:url(${data.recipes[i].image_url})"></div>
+				<div class="image-div" style="background-image:url(${data.recipes[i].image_url})"></div>
 				<div class="text-div">
-					<h3>${data.recipes[i].recipe_name}</h3>
-					<h4>${data.recipes[i].description}</h4>
-					<p>Ingredients: ${ingredients}</p>
+					<h2>${data.recipes[i].recipe_name}</h3>
+					<strong>${data.recipes[i].description}</strong>
+					<p><strong>Ingredients:</strong></p>
+					<ul>${data.recipes[i].ingredients.map(ing => `<li>${ing.name}</li>`).join('')}</ul>
 				</div>
 			</div>`;
 			document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', foodHTML);
 		}
 		const restartButton = `<button class="button-red" id = "restart" style = "margin-left: 10px; visibility:hidden" onclick = "resetState()">Rematch?</button>`;
-    const completeButton = `<button class="button-red" id = "complete" style = "margin-left: 10px; visibility:hidden" onclick = "submitResponse()">Complete!</button>`;
+		const completeButton = `<button class="button-red" id = "complete" style = "margin-left: 10px; visibility:hidden" onclick = "submitResponse()">Complete!</button>`;
 		document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', restartButton);
-    document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', completeButton);
+		document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', completeButton);
 	} catch (error) {
 		console.error('There was an error.', error);
 	}
@@ -179,7 +176,7 @@ function setupSwipe() {
 				var xMulti = event.deltaX * 0.03;
 				var yMulti = event.deltaY / 80;
 				var rotate = xMulti * yMulti;
-				
+
 				recipes[el.getAttribute("index")] = (toX > 0) ? 1 : 0; // right : left
 				console.log(recipes);
 
