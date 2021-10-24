@@ -5,7 +5,11 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="referrer" content="same-origin" />
-		<!--<link rel="stylesheet" href="css/style.css" />-->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2&family=Baloo+Paaji+2:wght@400;600&display=swap"
+		rel="stylesheet">
+		<link rel="stylesheet" href="/css/style.css" />
 		<link rel="stylesheet" href="/css/tinder.css" />
 		<link
 			rel="stylesheet"
@@ -17,48 +21,29 @@
 	</head>
 
 	<body>
-		<h1>Food Night!</h1>
 
 		<div class="tinder">
+			<h1>Chicken Tinder!</h1>
+
 			<div class="tinder--status">
 				<i class="fa fa-remove"></i>
 				<i class="fa fa-heart"></i>
 			</div>
 
 			<div class="tinder--cards">
-				<div class="tinder--card">
-					<img src="https://placeimg.com/600/300/people">
-					<h3>Demo card 1</h3>
-					<p>This is a demo for Tinder like swipe cards</p>
-				</div>
-				<div class="tinder--card">
-					<img src="https://placeimg.com/600/300/animals">
-					<h3>Demo card 2</h3>
-					<p>This is a demo for Tinder like swipe cards</p>
-				</div>
-				<div class="tinder--card">
-					<img src="https://placeimg.com/600/300/nature">
-					<h3>Demo card 3</h3>
-					<p>This is a demo for Tinder like swipe cards</p>
-				</div>
-				<div class="tinder--card">
-					<img src="https://placeimg.com/600/300/tech">
-					<h3>Demo card 4</h3>
-					<p>This is a demo for Tinder like swipe cards</p>
-				</div>
-				<div class="tinder--card">
-					<img src="https://placeimg.com/600/300/arch">
-					<h3>Demo card 5</h3>
-					<p>This is a demo for Tinder like swipe cards</p>
-				</div>
 			</div>
 
 			<div class="tinder--buttons">
-				<button id="nope"><i class="fa fa-remove"></i></button>
-				<button id="love"><i class="fa fa-heart"></i></button>
+				<button class = "tinder--buttons-interact" id="nope"><i class="fa fa-remove"></i></button>
+				<button class = "tinder--buttons-interact" id="love"><i class="fa fa-heart"></i></button>
+				<button class="button-red" id = "dietary-restriction" style = "margin-left: 10px;">I can't eat this because of a dietary restriction</button>
 			</div>
-	</div>
-
+		</div>
+		
 		<script src="/js/tinder-animation.js"></script>
+		
+		<script src="/js/twgl.min.js"></script>
+		<script src="/js/shaders.js"></script>
+		<script src="/js/blob.js"></script>
 	</body>
 </html>

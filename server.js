@@ -75,7 +75,7 @@ app.post('/groupcreation/', (req, res, next) => {
 // unique url and recipe selection
 app.get('/party/:groupID/recipes', (req, res) => {  
   const groupID = req.params.groupID;
-  const html = fs.readFileSync(path.resolve(__dirname + '/client/select-food-copy.html'), 'utf8');
+  const html = fs.readFileSync(path.resolve(__dirname + '/client/select-food.html'), 'utf8');
   res.send(html.replace('GROUP_ID_REPLACED_BY_EXPRESS', groupID));
 });
 
