@@ -69,10 +69,13 @@ button {
 	border-radius: 48px;
 }
 
-.group-creation {
+.side-panel {
 	padding: 64px;
 	color: var(--accent);
 	max-width: 900px;
+}
+.ingredient-panel {
+	max-width: 600px;
 }
 
 .group-creation h2 {
@@ -117,6 +120,10 @@ button {
 	margin-top: 36px;
 	clear: both;
 }
+.party-members {
+	max-height: 400px;
+	overflow-y: auto;
+}
 
 .party-members input {
 	border-width: 0;
@@ -124,6 +131,12 @@ button {
 	width: 200px;
 	padding-bottom: 0;
 	margin-bottom: 8px;
+	outline: 0;
+	transition: 0.1s ease-out;
+}
+.party-members input:hover {
+	border-bottom-width: 5px;
+	margin-bottom: 5px;
 }
 
 .add-friend {
@@ -147,4 +160,15 @@ canvas {
 	z-index: -1;
 	top: 0;
 	left: 0;
+}
+
+
+
+
+.ingredient-selection-wrapper {
+	display: grid;
+	grid-template-columns: 36px 1fr 2fr;
+}
+.ingredient-selection-wrapper input {
+	margin: auto;
 }

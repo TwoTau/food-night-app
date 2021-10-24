@@ -72,13 +72,11 @@ app.post('/groupcreation/', (req, res, next) => {
 });
 
 
-const recipesHtmlPath = path.resolve(__dirname + '/client/select-food-copy.html');
-let recipesHtmlContent = fs.readFileSync(recipesHtmlPath, 'utf8');
-
 // unique url and recipe selection
 app.get('/party/:groupID/recipes', (req, res) => {
   const groupID = req.params.groupID;
-  res.send(recipesHtmlContent.replace('ID_REPLACED_BY_EXPRESS', groupID));
+  const html = fs.readFileSync(path.resolve(__dirname + '/client/select-food-copy.html'), 'utf8');
+  res.send(html.replace('GROUP_ID_REPLACED_BY_EXPRESS', groupID));
 });
 
 app.post('/party/:groupID/recipes', (req, res) => {
@@ -164,7 +162,9 @@ app.post('/party/:groupID/recipes', (req, res) => {
 //      1. /api/:groupID/finalinvite for party information
 //      2. /api/recipe?recipe_name=<name> for recipe information
 app.get("/party/:groupID/invite/", (req, res) => {
-
+	const groupID = req.params.groupID;
+	const html = fs.readFileSync(path.resolve(__dirname + '/client/ingredient-select.html'), 'utf8');
+	res.send(html.replace('GROUP_ID_REPLACED_BY_EXPRESS', groupID));
 });
 
 ////////////////////////////// API /////////////////////////////////////
