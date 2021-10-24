@@ -3,7 +3,6 @@ const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
-const { SocketAddress } = require('net');
 const app = express();
 const PORT = process.env.PORT || 8000;
 const server = require('http').createServer(app);
@@ -21,6 +20,14 @@ app.use(express.json());
 
 app.use(express.static('client'));
 
+const mail = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'chicken.tinder.dubhacks@gmail.com',
+        pass: 'dubhacksahhhhh'
+    }
+});
+
 app.post('/groupcreation/', (req, res, next) => {
 	const formdata = req.body();
 	let memberData = formdata['members']; // TODO: change to front end response
@@ -29,6 +36,7 @@ app.post('/groupcreation/', (req, res, next) => {
 		let member = memberData[i];
 		member['response'] = [];
 		member['votingCompleted'] = false;
+        members.push(member);
 	}
 
 	const groupID = uuidv4().replaceAll('-', '').substring(0, 8);
@@ -50,8 +58,10 @@ app.post('/groupcreation/', (req, res, next) => {
 	// send group creation text to members of the group
     sendSMS(members, `Welcome to ChickenTinder, we're lucky to have you. You have been invited to ${formdata["partyName"]} happening on ${formdata["datetime"]}!\n
     \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}`);
+	
+    sendEmail(members, `Welcome to ChickenTinder, we're lucky to have you. You have been invited to ${formdata["partyName"]} happening on ${formdata["datetime"]}!\n
+    \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}`, "ChickenTinder Invite!!");
 
-	// TODO: send group creation email to the members of the group
 });
 
 // unique url and recipe selection
@@ -140,8 +150,8 @@ app.post('/party/:groupID/recipes', (req, res) => {
 });
 
 // requires page will make 2 calls,
-//      1. /:groupID/finalinvite for party information
-//      2. /recipe?recipe_name=<name> for recipe information
+//      1. /api/:groupID/finalinvite for party information
+//      2. /api/recipe?recipe_name=<name> for recipe information
 app.get("/party/:groupID/invite/", (req, res) => {
 
 });
@@ -168,7 +178,7 @@ app.get('/api/recipe', (req, res) => {
 
 // get the ingredients associated with recipe chosen by group with id groupID
 app.get('/api/:groupID/ingredients', (req, res) => {
-	const groupID = req.params.groupID;gi
+	const groupID = req.params.groupID;
 	let group = null;
 	// find group
 	for (let i = 0; i < databases.groups.length; i++) {
@@ -233,7 +243,22 @@ io.on('connection', (socket) => {
 
     socket.on('edit', (data) => {
         io.to(groupID).emit('edit', { ingredient: data.ingredient, content: data.content });
-        // set 
+
+        // set ingredient to new contents of text box
+        let group = null;
+        // find group
+        for (let i = 0; i < databases.groups.length; i++) {
+            if (groupID === databases.groups[i].groupID) {
+                group = databases.groups[i];
+                break;
+            }
+        }
+
+        for (let i = 0; i < group.ingredients.length; i++) {
+            if (group.ingredients[i].name === data.ingredient) {
+                group.ingredients[i].bringer = data.content;
+            }
+        }
     });
 
     socket.on('textbox_select', (data) => {
@@ -298,6 +323,9 @@ app.get('/test/', (req, res) => {
 const test = new Date(2021, 9, 23, 11, 00, 0);
 
 let databases = {
+    social_feed: [
+        
+    ],
 	groups: [
 		// push new groups into group id
 		{
@@ -359,4 +387,24 @@ function sendSMS(members, msg) {
 			})
 			.then((message) => console.log(message.sid));
 	}
+}
+
+function sendEmail(members, msg, subject) {    
+    for (let i = 0; i < members.length; i++) {
+        const mailOptions = {
+            from: 'chicken.tinder.dubhacks@gmail.com',
+            to: members[i].email,
+            subject: subject,
+            text: msg,
+        };
+
+		mail.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log(error);
+            } else {
+              console.log('Email sent: ' + info.response);
+            }
+          });
+	}
+      
 }
