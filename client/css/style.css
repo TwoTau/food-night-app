@@ -178,12 +178,23 @@ canvas {
 
 
 
-.ingredient-selection-wrapper {
+.ingredient-selection {
 	display: grid;
 	grid-template-columns: 36px 1fr 2fr;
 }
-.ingredient-selection-wrapper input {
+.ingredient-selection input {
 	margin: auto;
+}
+
+.ingredient-selection input:checked + label {
+	color: black;
+}
+
+.intro h2 {
+	font-size: 2rem;
+}
+.food-image {
+	margin-top: 36px;
 }
 
 #pop-up {

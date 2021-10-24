@@ -6,6 +6,11 @@ const cors = require('cors');
 const path = require('path');
 const { json } = require('express');
 
+const DISABLE_TWILIO = process.env.DISABLE_TWILIO || false;
+if (DISABLE_TWILIO) {
+	console.log('Disabling Twilio');
+}
+
 const app = express();
 const PORT = process.env.PORT || 8000;
 const server = require('http').createServer(app);
@@ -206,6 +211,7 @@ app.get("/party/:groupID/invite", (req, res) => {
     html = html.replaceAll('NAME_REPLACED_BY_EXPRESS', member);
     html = html.replaceAll('RECIPE_DESCRIPTION', recipe.description);
     html = html.replaceAll('IMAGE_SOURCE', recipe.image_url);
+	html = html.replaceAll('INGREDIENTS_JSON_REPLACED_BY_EXPRESS', JSON.stringify(group.ingredients));
 	res.send(html);
 });
 
@@ -431,6 +437,7 @@ function getRecipeNames() {
 }
 
 function sendSMS(members, msg) {
+	if (DISABLE_TWILIO) return;
 	for (let i = 0; i < members.length; i++) {
 		client.messages
 			.create({
@@ -443,6 +450,7 @@ function sendSMS(members, msg) {
 }
 
 function sendIndividualSMS(member, msg) {
+	if (DISABLE_TWILIO) return;
     client.messages
 			.create({
 				body: msg,
@@ -452,7 +460,8 @@ function sendIndividualSMS(member, msg) {
 			.then((message) => console.log(message.sid));
 }
 
-function sendEmail(members, msg, subject) {    
+function sendEmail(members, msg, subject) {
+	if (DISABLE_TWILIO) return;
     for (let i = 0; i < members.length; i++) {
         const mailOptions = {
             from: 'chicken.tinder.dubhacks@gmail.com',
@@ -473,6 +482,7 @@ function sendEmail(members, msg, subject) {
 }
 
 function sendIndividualEmail(member, msg, subject) {
+	if (DISABLE_TWILIO) return;
     const mailOptions = {
         from: 'chicken.tinder.dubhacks@gmail.com',
         to: member.email,
