@@ -80,9 +80,6 @@ function showPopUp() {
 function hidePopUp() {
 	document.getElementById('pop-up').style.visibility = "hidden";
 	document.getElementById('pop-up').style.display = "none";
-  location.href = `/party/${groupID}/invite?` + new URLSearchParams({
-    member: memberName
-  });
 }
 
 async function addCard() {
