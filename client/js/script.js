@@ -20,9 +20,15 @@ document.querySelector('.party-members').addEventListener('click', (e) => {
 	}
 });
 
+// set date
+const today = new Date().toISOString().slice(0, 10);
+const dateElement = document.getElementById('date');
+dateElement.value = today;
+dateElement.min = today;
+
 // parse form into data Object. TODO: error handling and empty field handling
 function parseForm() {
-	const date = document.getElementById('date').value;
+	const date = dateElement.value;
 	const time = document.getElementById('time').value;
 	const partyName = document.getElementById('party-name').value;
 	if (!partyName || !date || !time) {
@@ -57,10 +63,10 @@ document.querySelector('.create-party').addEventListener('click', async () => {
 			},
 			body: json,
 		});
-		console.log('Response', await response.json());	
+		console.log('Response', await response.json());
 		showPopUp();
-		setTimeout(() => {hidePopUp()}, 4000);	
-	}	
+		setTimeout(() => { hidePopUp() }, 4000);
+	}
 });
 
 function showPopUp() {
