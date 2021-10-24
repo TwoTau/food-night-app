@@ -1,21 +1,18 @@
 const express = require('express');
-const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 const cors = require('cors');
-const { json } = require('express');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
 const accountSid = "AC0b45470f1e594b28e20b952e23ab4603";
 const authToken = "ce37c0ac370bf5390878315b890bbae1";
 
-const domain = "http://localhost:8000";
-
 const client = require('twilio')(accountSid, authToken);
+const domain = "http://localhost:8000";
 
 app.use(express.json());
 
-app.use(express.static('public'));
+app.use(express.static('client'));
 
 // configure static landing files
 app.use('/css', express.static(__dirname + '/public/css'));
@@ -331,4 +328,3 @@ function getRecipeNames() {
     });
     return recipe_names;
 }
-

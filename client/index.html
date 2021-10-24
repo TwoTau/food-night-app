@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="referrer" content="same-origin">
+	<link rel="stylesheet" href="/css/style.css" />
+	<title>Food night app</title>
+</head>
+
+<body>
+	<h1>Food night!</h1>
+
+	<div>
+		<label for="party-name" required>Party name</label>
+		<input type="text" class="form-control" id="party-name" placeholder="Taco Tuesday">
+		<br>
+		<label for="date">Date</label>
+		<input type="date" class="form-control" id="date" name="date"> <!-- year-mm-dd -->
+		<!-- min="2021-10-23" -->
+		<br>
+		<label for="time">Time</label>
+		<input type="time" class="form-control" id="time" name="time" value="18:30">
+		<br>
+		Party People
+
+		<div class="party-members">
+			<div class="you">
+				<input class="member-name" type="text" placeholder="Your Name">
+				<input class="member-phone" type="tel" name="phone" placeholder="123-456-6789" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+				<input class="member-email" type="email" placeholder="Email">
+				<span>You!</span>
+			</div>
+		</div>
+	</div>
+
+	<button class="add-friend">Add a friend</button>
+	<br>
+	We'll never share your email or phone with anyone else.
+	<br>
+	<button class="create-party">Create Party</button>
+
+	<script src="js/script.js"></script>
+</body>
+
+</html>
