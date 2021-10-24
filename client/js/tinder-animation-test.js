@@ -4,8 +4,12 @@ const tinderContainer = document.querySelector('.tinder');
 const nope = document.getElementById('nope');
 const love = document.getElementById('love');
 
+const groupID = 'ID_REPLACED_BY_EXPRESS';
+const base_url = `https://localhost:8000`;
+
 const urlParams = new URLSearchParams(window.location.search);
 const memberName = urlParams.get('member');
+let recipes = [];
 
 let allCards = [];
 addCard().then(() => {
@@ -51,10 +55,11 @@ async function addCard() {
 		// document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', foodHTML);
 		for (let i = 0; i < data.recipes.length; i++) {
 			let ingredients = data.recipes[i].ingredients[0].name;
+			recipes = [...recipes, 0];
 			for (let j = 1; j < data.recipes[i].ingredients.length; j++) {
-				ingredients += ", " + data.recipes[i].ingredients[j].name;
+				ingredients += ", " + data.recipes[i].ingredients[j].name;				
 			}
-			const foodHTML = `<div class="tinder--card">
+			const foodHTML = `<div class="tinder--card" index=${i}>
 				<div style="background-image:url(${data.recipes[i].image_url})"></div>
 				<h3>${data.recipes[i].recipe_name}</h3>
 				<p>${ingredients}</p>
@@ -110,6 +115,9 @@ function setupSwipe() {
 				var xMulti = event.deltaX * 0.03;
 				var yMulti = event.deltaY / 80;
 				var rotate = xMulti * yMulti;
+				
+				recipes[el.getAttribute("index")] = (toX > 0) ? 1 : 0; // right : left
+				console.log(recipes);
 
 				event.target.style.transform =
 					'translate(' + toX + 'px, ' + (toY + event.deltaY) + 'px) rotate(' + rotate + 'deg)';

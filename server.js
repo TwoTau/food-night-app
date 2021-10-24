@@ -164,8 +164,33 @@ app.post('/party/:groupID/recipes', (req, res) => {
 //      2. /api/recipe?recipe_name=<name> for recipe information
 app.get("/party/:groupID/invite/", (req, res) => {
 	const groupID = req.params.groupID;
-	const html = fs.readFileSync(path.resolve(__dirname + '/client/ingredient-select.html'), 'utf8');
-	res.send(html.replace('GROUP_ID_REPLACED_BY_EXPRESS', groupID));
+    let group = null;
+	// find group
+	for (let i = 0; i < databases.groups.length; i++) {
+		if (groupID === databases.groups[i].groupID) {
+			group = databases.groups[i];
+			break;
+		}
+	}
+
+	let html = fs.readFileSync(path.resolve(__dirname + '/client/ingredient-select.html'), 'utf8');
+    html = html.replace('GROUP_ID_REPLACED_BY_EXPRESS', groupID);
+    html = html.replaceAll('FINAL_DISH', group.recipe);
+    html = html.replaceAll('FINAL_DATETIME', group.datetime);
+
+    // find recipe
+    const recipes = databases['recipes'];
+	let recipe = null;
+	for (let i = 0; i < recipes.length; i++) {
+		if (group.recipe === recipes[i].recipe_name) {
+			recipe = recipes[i];
+            break;
+		}
+	}
+
+    html = html.replaceAll('RECIPE_DESCRIPTION', recipe.description);
+    html = html.replaceAll('IMAGE_SOURCE', recipe.image_url);
+	res.send(html);
 });
 
 ////////////////////////////// API /////////////////////////////////////
@@ -373,7 +398,7 @@ let databases = {
 					votingCompleted: false,
 				},
 			],
-			recipe: '',
+			recipe: 'Classic Hamburger',
 			ingredients: [],
 		},
 	],
