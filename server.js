@@ -58,15 +58,12 @@ app.post('/groupcreation/', (req, res, next) => {
     sendEmail(members, `Welcome to ChickenTinder, we're lucky to have you. You have been invited to ${formdata["partyName"]} happening on ${formdata["datetime"]}!\n
     \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}`, "ChickenTinder Invite!!");
 
-<<<<<<< HEAD
-=======
 	console.log(`Created group ${groupID} with name "${newGroup.partyName}" and ${members.length} members`);
 	res.json({
 		id: groupID,
 	})
 
 	// TODO: send group creation email to the members of the group
->>>>>>> 0b1255253b34554292b4f72ed6a92d7516ae2a30
 });
 
 // unique url and recipe selection
