@@ -4,6 +4,9 @@ const tinderContainer = document.querySelector('.tinder');
 const nope = document.getElementById('nope');
 const love = document.getElementById('love');
 
+const urlParams = new URLSearchParams(window.location.search);
+const memberName = urlParams.get('member');
+
 let allCards = [];
 addCard().then(() => {
 	initCards();
@@ -76,8 +79,8 @@ function setupSwipe() {
 
 		hammertime.on('panend', function (event) {
 			el.classList.remove('moving');
-			tinderContainer.classList.remove('tinder_love');
-			tinderContainer.classList.remove('tinder_nope');
+			//tinderContainer.classList.remove('tinder_love');
+			//tinderContainer.classList.remove('tinder_nope');
 
 			var moveOutWidth = document.body.clientWidth;
 			var keep = Math.abs(event.deltaX) < 70 || Math.abs(event.velocityX) < 0.4;

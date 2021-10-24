@@ -30,7 +30,7 @@ const mail = nodemailer.createTransport({
     }
 });
 
-app.post('/groupcreation/', (req, res, next) => {
+app.post('/groupcreation/', (req, res, next) => {    
 	const formdata = req.body;	
 	for (let member of formdata.members) {
         member.phone = member.phone.replaceAll("-", "");
@@ -57,11 +57,11 @@ app.post('/groupcreation/', (req, res, next) => {
 	// send group creation text to members of the group
     for (let i = 0; i < formdata.members.length; i++) {
         sendIndividualSMS(formdata.members[i], `Hi ${formdata.members[i].name}, welcome to ChickenTinder, we're lucky to have you! You have been invited to ${formdata["partyName"]} happening on ${formdata["date"]}!\n
-        \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}`);
-    }    
-	
-    sendEmail(formdata.members, `Welcome to ChickenTinder, we're lucky to have you. You have been invited to ${formdata["partyName"]} happening on ${formdata["datetime"]}!\n
-    \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}`, "ChickenTinder Invite!!");
+        \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}?member=${formdata.members[i].name.replaceAll(" ", "%20")}`);
+        
+        sendIndividualEmail(formdata.members[i], `Hi ${formdata.members[i].name}, welcome to ChickenTinder, we're lucky to have you! You have been invited to ${formdata["partyName"]} happening on ${formdata["date"]}!\n
+        \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}?member=${formdata.members[i].name.replaceAll(" ", "%20")}`, "ChickenTinder Invite!!");
+    }        
 
 	console.log(`Created group ${groupID} with name "${newGroup.partyName}" and ${formdata.members.length} members`);
 	res.json({
@@ -76,17 +76,20 @@ const recipesHtmlPath = path.resolve(__dirname + '/client/select-food-copy.html'
 let recipesHtmlContent = fs.readFileSync(recipesHtmlPath, 'utf8');
 
 // unique url and recipe selection
-app.get('/party/:groupID/recipes', (req, res) => {
+app.get('/party/:groupID/recipes', (req, res) => {  
   const groupID = req.params.groupID;
+  const member = req.query.member; // send member name as well
+  console.log(member);
   res.send(recipesHtmlContent.replace('ID_REPLACED_BY_EXPRESS', groupID));
 });
 
-app.post('/party/:groupID/recipes', (req, res) => {
-	// groupID encoded as url param
+app.post('/party/:groupID/recipes', (req, res) => {    
+	// groupID encoded as url param, member name as query param
 	const groupID = req.params.groupID;
+    const member = req.query.member; // TODO: set front end field
+    console.log(member);
 
-	const data = res.body();
-	const member = data['member']; // TODO: set front end field
+	const data = res.body();	
 	let group = null;
 	// find group
 	for (let i = 0; i < databases.groups.length; i++) {
@@ -428,4 +431,21 @@ function sendEmail(members, msg, subject) {
           });
 	}
       
+}
+
+function sendIndividualEmail(member, msg, subject) {
+    const mailOptions = {
+        from: 'chicken.tinder.dubhacks@gmail.com',
+        to: member.email,
+        subject: subject,
+        text: msg,
+    };
+
+    mail.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
 }
