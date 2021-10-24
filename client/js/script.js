@@ -3,10 +3,10 @@ const addFriendButton = document.querySelector('.add-friend');
 function addFriend() {
 	const friendHtml = `<div class="friend">
 		<input class="member-name" type="text" placeholder="Name">
+		<input class="member-email" type="email" placeholder="Email">
 		<input class="member-phone" type="tel" name="phone" placeholder="123-456-6789"
 			pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
-		<input class="member-email" type="email" placeholder="Email">
-		<button class="remove-friend">Remove</button>
+		<button class="remove-friend">x</button>
 	</div>`;
 	document.querySelector('.party-members').insertAdjacentHTML('beforeend', friendHtml);
 }

@@ -4,4 +4,123 @@
 	padding: 0;
 }
 
+:root {
+	--background: #FFF7DD;
+	--accent: #C70039;
+	--accent-dark: #900C3F;
+}
 
+html {
+	font-size: 18px;
+}
+body {
+	background: var(--background);
+	font-family: 'Baloo Da 2', sans-serif;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	gap: 100px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Baloo Paaji 2', sans-serif;
+}
+label {
+	font-weight: bold;
+}
+input {
+	font: inherit;
+	background: inherit;
+	padding: 6px 12px;
+	border: 2px solid var(--accent-dark);
+}
+button {
+	cursor: pointer;
+	font: inherit;
+	background: inherit;
+	border: 0;
+}
+
+.intro {
+	background: var(--accent);
+	color: var(--background);
+	max-width: 600px;
+	font-weight: bold;
+	letter-spacing: 0.2px;
+	padding: 48px;
+}
+.header {
+	font-size: 4rem;
+}
+.description {
+	margin-top: -12px;
+	margin-bottom: 24px;
+}
+.intro-image {
+	width: 100%;
+	max-width: 450px;
+	border-radius: 48px;
+}
+
+.group-creation {
+	padding: 64px;
+	color: var(--accent);
+	max-width: 900px;
+}
+.group-creation h2 {
+	font-size: 2.5rem;
+	text-align: right;
+}
+.group-creation h3 {
+	font-size: 1.5rem;
+	text-align: right;
+}
+
+.group-inputs-wrapper {
+	width: 500px;
+	float: right;
+}
+.date-time-wrapper {
+	display: flex;
+	flex-flow: row wrap;
+	gap: 18px;
+}
+.date-time-wrapper .input-wrapper {
+	flex: 1;
+}
+.input-wrapper {
+	margin-bottom: 18px;
+}
+.input-wrapper > *{
+	display: block;
+	width: 100%;
+}
+.input-wrapper input {
+	color: var(--accent-dark);
+}
+
+.party-members-wrapper {
+	margin-top: 36px;
+	clear: both;
+}
+.party-members input {
+	border-width: 0;
+	border-bottom-width: 2px;
+	width: 200px;
+	padding-bottom: 0;
+	margin-bottom: 8px;
+}
+.add-friend {
+	color: orange;
+	font-weight: bold;
+}
+
+.create-party {
+	margin-top: 24px;
+	padding: 6px 24px;
+	background: var(--accent);
+	border-radius: 100px;
+	font-weight: bold;
+	color: var(--background);
+	float: right;
+}
