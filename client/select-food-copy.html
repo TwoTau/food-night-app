@@ -5,6 +5,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta name="referrer" content="same-origin" />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Baloo+Da+2&family=Baloo+Paaji+2:wght@400;600&display=swap"
+		rel="stylesheet">
 		<link rel="stylesheet" href="/css/style.css" />
 		<link rel="stylesheet" href="/css/tinder-test.css" />
 		<link
@@ -17,7 +21,7 @@
 	</head>
 
 	<body>
-		<h1>Food Night!</h1>
+		<h1 style = "color: white;">Food Night!</h1>
 
 		<div class="tinder">
 			<div class="tinder--status">
@@ -29,11 +33,16 @@
 			</div>
 
 			<div class="tinder--buttons">
-				<button id="nope"><i class="fa fa-remove"></i></button>
-				<button id="love"><i class="fa fa-heart"></i></button>
+				<button class = "tinder--buttons-interact" id="nope"><i class="fa fa-remove"></i></button>
+				<button class = "tinder--buttons-interact" id="love"><i class="fa fa-heart"></i></button>
+				<button class="button-red" style = "margin-left: 10px;">I can't eat this because of a dietary restriction</button>
 			</div>
 		</div>
 
+		<script src="js/script.js"></script>
+		<script src="js/twgl.min.js"></script>
+		<script src="js/shaders.js"></script>
 		<script src="/js/tinder-animation-test.js"></script>
+		<script src="js/blob.js"></script>
 	</body>
 </html>
