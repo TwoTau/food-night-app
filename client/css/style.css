@@ -8,6 +8,7 @@
 	--background: #FFF7DD;
 	--accent: #C70039;
 	--accent-dark: #900C3F;
+	--accent-light: #FF5733;
 }
 
 html {
@@ -160,6 +161,10 @@ button {
 	border-radius: 100px;
 	font-weight: bold;
 	color: var(--background);
+}
+
+.button-red:hover {
+	background: var(--accent-light);
 }
 
 canvas {
