@@ -38,16 +38,28 @@ async function addCard() {
 			throw error;
 		}
 
-		const foodHTML = data.recipes.map((recipe) =>
-			`<div class="tinder--card">
-				<div style="background-image:url(${recipe.image_url})"></div>
-				<h3>${recipe.recipe_name}</h3>
-				<p>${recipe.ingredients[0].name}</p>
-			</div>`
-		).join('');
-		document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', foodHTML);
+		// const foodHTML = data.recipes.map((recipe) =>
+		// 	`<div class="tinder--card">
+		// 		<div style="background-image:url(${recipe.image_url})"></div>
+		// 		<h3>${recipe.recipe_name}</h3>
+		// 		<p></p>
+		// 	</div>`
+		// ).join('');
+		// document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', foodHTML);
+		for (let i = 0; i < data.recipes.length; i++) {
+			let ingredients = data.recipes[i].ingredients[0].name;
+			for (let j = 1; j < data.recipes[i].ingredients.length; j++) {
+				ingredients += ", " + data.recipes[i].ingredients[j].name;
+			}
+			const foodHTML = `<div class="tinder--card">
+				<div style="background-image:url(${data.recipes[i].image_url})"></div>
+				<h3>${data.recipes[i].recipe_name}</h3>
+				<p>${ingredients}</p>
+			</div>`;
+			document.querySelector('.tinder--cards').insertAdjacentHTML('beforeend', foodHTML);
+		}
 	} catch (error) {
-		console.error('There was an error!', error);
+		console.error('There was an error.', error);
 	}
 }
 
@@ -67,7 +79,7 @@ function setupSwipe() {
 			tinderContainer.classList.toggle('tinder_nope', event.deltaX < 0);
 
 			var xMulti = event.deltaX * 0.03;
-			var yMulti = event.deltaY / 80;
+			var yMulti = event.deltaY / 90;
 			var rotate = xMulti * yMulti;
 
 			event.target.style.transform =
@@ -76,11 +88,12 @@ function setupSwipe() {
 
 		hammertime.on('panend', function (event) {
 			el.classList.remove('moving');
+			// tinder_love and tinder_nope for overall container, not cards
 			tinderContainer.classList.remove('tinder_love');
 			tinderContainer.classList.remove('tinder_nope');
 
 			var moveOutWidth = document.body.clientWidth;
-			var keep = Math.abs(event.deltaX) < 70 || Math.abs(event.velocityX) < 0.4;
+			var keep = Math.abs(event.deltaX) < 60 || Math.abs(event.velocityX) < 0.4;
 
 			event.target.classList.toggle('removed', !keep);
 

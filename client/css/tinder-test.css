@@ -8,8 +8,8 @@
 
 body {
 	background: #fef6d9;
-	/*overflow: hidden;*/
 	font-family: sans-serif;
+	gap: 0;
 }
 
 .tinder {
