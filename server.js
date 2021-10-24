@@ -3,8 +3,11 @@ const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const nodemailer = require('nodemailer');
 const cors = require('cors');
+const { SocketAddress } = require('net');
 const app = express();
 const PORT = process.env.PORT || 8000;
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 
 const accountSid = "AC0b45470f1e594b28e20b952e23ab4603";
 const authToken = "ce37c0ac370bf5390878315b890bbae1";
@@ -43,7 +46,7 @@ app.post('/groupcreation/', (req, res, next) => {
     const url = `${domain}/party/${groupID}/recipes`;
     
     // send group creation text to members of the group
-    sendSMS(members, `You have been invited to ${formdata["partyName"]} happening on ${formdata["datetime"]}!\n
+    sendSMS(members, `Welcome to ChickenTinder, we're lucky to have you. You have been invited to ${formdata["partyName"]} happening on ${formdata["datetime"]}!\n
     \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}`);
 
     // TODO: send group creation email to the members of the group
@@ -125,17 +128,26 @@ app.post('/party/:groupID/recipes', (req, res) => {
     })
     group["ingredients"] = ingredientList;
     
-    const url = `${domain}/party/${groupID}/ingredients/`;
+    const url = `${domain}/party/${groupID}/invite/`;
 
-    sendSMS(group.members, `The votes are in and you have decided to make ${max_recipe}! But before your fun food adventure can begin, we need a little more information from you!
-    Please navigate to the following link and distribute the recipe ingredients to truly get your party started: ${url}`);
+    // all ingredients distributed - send texts
+    let msg = `The recipe is chosen and the party is about to start.
+    \n Please refer to the invite link to sign up to bring ingredients: ${url}\n
+    \nHave a great food night and thank you for using ChickenTinder!`;
+    
+    sendSMS(group.members, msg);
 });
 
-app.get("/party/:groupID/ingredients", (req, res) => {
-    // serve ingredients page to the user
+
+
+// requires page will make 2 calls,
+//      1. /:groupID/finalinvite for party information
+//      2. /recipe?recipe_name=<name> for recipe information
+app.get("/party/:groupID/invite/", (req, res) => {
+    
 });
 
-app.post("/party/:groupID/ingredients", (req, res) => {
+app.post("/party/:groupID/invite/", (req, res) => {
     const groupID = req.params.groupID;
     const data = res.body();
     
@@ -150,35 +162,7 @@ app.post("/party/:groupID/ingredients", (req, res) => {
     }
 
     group.ingredients = data["ingredients"];
-
-    // check if ingredients completed
-    for (let i = 0; i < group.ingredients.length; i++) {
-        if (group.ingredients[i] === null) {
-            return;
-        }
-    }
-
-    // all ingredients distributed - send texts
-    let msg = `The recipe is chosen, the ingredients distributed, and the party is about to start. \n
-    \n            
-    Please refer below for who is bringing what:\n`;
-
-    group.ingredients.forEach(i => {
-        msg += `\t${i.name}: ${i.bringer}\n`;        
-    });
-
-    msg += "\nHave a great food night!";
-    
-    sendSMS(group.members, msg);
 });
-
-
-// requires page will make 2 calls,
-//      1. /:groupID/finalinvite for party information
-//      2. /recipe?recipe_name=<name> for recipe information
-app.get("/party/:groupID/invite/", (req, res) => {
-    
-})
 
 
 ////////////////////////////// API /////////////////////////////////////
@@ -216,7 +200,7 @@ app.get('/api/:groupID/ingredients', (req, res) => {
     res.json({"ingredients": group.ingredients});
 });
 
-// get final invite information
+// get final invite information -- groupID is included (used for the socket)
 app.get('/api/:groupID/finalinvite', (req, res) => {
     const groupID = req.params.groupID;
     let group = null;
@@ -233,8 +217,59 @@ app.get('/api/:groupID/finalinvite', (req, res) => {
 
 ////////////////////////////// END API /////////////////////////////////
 
+//// socket connections /////
 
-app.listen(PORT, () => {
+let groupToSocket = {};
+
+io.on('connection', (socket) => {
+    socket.username = socket.handshake.query.name;
+    let groupID = socket.handshake.query.groupID;
+    
+    if (!groupToSocket[groupID]) {
+        groupToSocket[groupID] = [];        
+    }
+
+    groupToSocket[groupID].push(socket);
+    socket.join(groupID);
+    console.log(`New client ${socket.id} connected to group ${groupID}`);
+    sendUsersUpdate(groupID);
+
+    socket.on('disconnect', () => {
+        if (groupToSocket[socket]) {
+            const idx = groupToSocket[groupID].indexOf(socket);
+			if (idx > -1) {
+				groupToSocket[groupID].splice(index, 1)
+				// delete groupID
+				if (groupToSocket[groupID].length === 0) {
+					delete groupToSocket[groupID];					
+				}
+			}
+        }
+
+        console.log(`Client ${socket.id} disconnected froom group ${groupID}`);
+		sendUsersUpdate(groupID);
+    });
+
+    socket.on('edit', (data) => {
+        io.to(groupID).emit('edit', { ingredient: data.ingredient, content: data.content });
+    });
+
+    socket.on('textbox_select', (data) => {
+        io.to(groupID).emit('textbox_select', {ingredient: data.ingredient, name: socket.username});
+    });
+});
+
+function sendUsersUpdate(groupID) {
+	if (groupToSocket[groupID]) {
+		io.to(groupID).emit('users_list', groupToSocket[groupID].map((s) => ({
+			name: s.username						
+		})));
+	}
+}
+
+//// end socket connections/
+
+server.listen(PORT, () => {
 	console.log(`food-night listening at http://localhost:${PORT}`);
 });
 
