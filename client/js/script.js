@@ -57,18 +57,18 @@ document.querySelector('.create-party').addEventListener('click', async () => {
 			},
 			body: json,
 		});
-		console.log('Response', await response.json());		
+		console.log('Response', await response.json());	
+		showPopUp();
+		setTimeout(() => {hidePopUp()}, 4000);	
 	}	
-	showPopUp();
-	setTimeout(() => {hidePopUp()}, 2500);
 });
 
 function showPopUp() {
-	document.querySelector('#pop-up').style.visibility = "visible";
-	document.querySelector('#pop-up').style.display = "block";
+	document.getElementById('pop-up').style.visibility = "visible";
+	document.getElementById('pop-up').style.display = "block";
 }
 
 function hidePopUp() {
-	document.querySelector('#pop-up').style.visibility = "hidden";
-	document.querySelector('#pop-up').style.display = "none";
+	document.getElementById('pop-up').style.visibility = "hidden";
+	document.getElementByIdnp('pop-up').style.display = "none";
 }
