@@ -270,7 +270,7 @@ app.get('/api/:groupID/finalinvite', (req, res) => {
 
 
 app.listen(PORT, () => {
-	console.log(`Example app listening at http://localhost:${PORT}`);
+	console.log(`food-night listening at http://localhost:${PORT}`);
 });
 
 // schema
