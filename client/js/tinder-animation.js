@@ -5,7 +5,7 @@ const nope = document.getElementById('nope');
 const love = document.getElementById('love');
 const dietaryRestriction = document.getElementById('dietary-restriction');
 
-const base_url = `https://localhost:8000`;
+const base_url = `https://chicken-tinder-dubhacks.herokuapp.com`;
 
 const urlParams = new URLSearchParams(window.location.search);
 const memberName = urlParams.get('member');
@@ -84,7 +84,7 @@ function hidePopUp() {
 
 async function addCard() {
 	// const url = 'https://food-night-app.herokuapp.com/api/recipes';
-	const url = 'http://localhost:8000/api/recipes';
+	const url = 'https://chicken-tinder-dubhacks.herokuapp.com/api/recipes';
 
 	try {
 		const response = await fetch(url);
