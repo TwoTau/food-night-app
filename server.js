@@ -22,13 +22,11 @@ app.use(express.json());
 app.use(express.static('client'));
 
 app.post('/groupcreation/', (req, res, next) => {
-	const formdata = req.body();
-	let memberData = formdata['members']; // TODO: change to front end response
+	const formdata = req.body;
 	members = [];
-	for (let i = 0; i < memberNames.length; i++) {
-		let member = memberData[i];
-		member['response'] = [];
-		member['votingCompleted'] = false;
+	for (let member of formdata.members) {
+		member.response = [];
+		member.votingCompleted = false;
 	}
 
 	const groupID = uuidv4().replaceAll('-', '').substring(0, 8);
@@ -50,6 +48,11 @@ app.post('/groupcreation/', (req, res, next) => {
 	// send group creation text to members of the group
     sendSMS(members, `Welcome to ChickenTinder, we're lucky to have you. You have been invited to ${formdata["partyName"]} happening on ${formdata["datetime"]}!\n
     \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}`);
+
+	console.log(`Created group ${groupID} with name "${newGroup.partyName}" and ${members.length} members`);
+	res.json({
+		id: groupID,
+	})
 
 	// TODO: send group creation email to the members of the group
 });
