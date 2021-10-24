@@ -1,6 +1,7 @@
 const fs = require('fs');
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
+const nodemailer = require('nodemailer');
 const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -42,16 +43,8 @@ app.post('/groupcreation/', (req, res, next) => {
     const url = `${domain}/party/${groupID}/recipes`;
     
     // send group creation text to members of the group
-    for (let i = 0; i < members.length; i++) {
-        client.messages
-            .create({
-                body: `You have been invited to ${formdata["partyName"]} happening on ${formdata["datetime"]}!\n
-                    \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}`,
-                from: '+19857773832',
-                to: `+1${members[i]["phonenumber"]}` // replace with receiver phone #
-            })
-            .then(message => console.log(message.sid));
-    }
+    sendSMS(members, `You have been invited to ${formdata["partyName"]} happening on ${formdata["datetime"]}!\n
+    \n Please vote on the recipe that you will be making at your next food night by going to this link: ${url}`);
 
     // TODO: send group creation email to the members of the group
 
@@ -134,16 +127,8 @@ app.post('/party/:groupID/recipes', (req, res) => {
     
     const url = `${domain}/party/${groupID}/ingredients/`;
 
-    for (let i = 0; i < group.members.length; i++) {
-        client.messages
-            .create({
-                body: `The votes are in and you have decided to make ${max_recipe}! But before your fun food adventure can begin, we need a little more information from you!
-                Please navigate to the following link and distribute the recipe ingredients to truly get your party started: ${url}`,
-                from: '+19857773832',
-                to: `+1${group.members[i]["phonenumber"]}` // replace with receiver phone #
-            })
-            .then(message => console.log(message.sid));
-    }
+    sendSMS(group.members, `The votes are in and you have decided to make ${max_recipe}! But before your fun food adventure can begin, we need a little more information from you!
+    Please navigate to the following link and distribute the recipe ingredients to truly get your party started: ${url}`);
 });
 
 app.get("/party/:groupID/ingredients", (req, res) => {
@@ -184,15 +169,7 @@ app.post("/party/:groupID/ingredients", (req, res) => {
 
     msg += "\nHave a great food night!";
     
-    for (let i = 0; i < group.members.length; i++) {
-        client.messages
-            .create({
-                body: msg,
-                from: '+19857773832',
-                to: `+1${group.members[i]["phonenumber"]}` // replace with receiver phone #
-            })
-            .then(message => console.log(message.sid));
-    }
+    sendSMS(group.members, msg);
 });
 
 
@@ -215,7 +192,7 @@ app.get('/api/recipes', (req, res) => {
 app.get('/api/recipe', (req, res) => {
     const recipe_name = req.query.recipe_name;
     const recipes = databases["recipes"];
-    const recipe = null;
+    let recipe = null;
     for (let i = 0; i < recipes.length; i ++) {
         if (recipe_name === recipes[i].recipe_name) {
             recipe = recipes[i];
@@ -353,4 +330,16 @@ function getRecipeNames() {
         recipe_names.push(r.recipe_name);
     });
     return recipe_names;
+}
+
+function sendSMS(members, msg) {
+    for (let i = 0; i < members.length; i++) {
+        client.messages
+            .create({
+                body: msg,
+                from: '+19857773832',
+                to: `+1${members[i]["phonenumber"]}` // replace with receiver phone #
+            })
+            .then(message => console.log(message.sid));
+    }
 }
