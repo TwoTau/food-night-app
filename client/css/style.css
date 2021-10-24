@@ -75,6 +75,7 @@ button {
 	color: var(--accent);
 	max-width: 900px;
 }
+
 .ingredient-panel {
 	max-width: 600px;
 }
@@ -121,6 +122,7 @@ button {
 	margin-top: 36px;
 	clear: both;
 }
+
 .party-members {
 	max-height: 400px;
 	overflow-y: auto;
@@ -135,6 +137,7 @@ button {
 	outline: 0;
 	transition: 0.1s ease-out;
 }
+
 .party-members input:hover {
 	border-bottom-width: 5px;
 	margin-bottom: 5px;
@@ -175,25 +178,24 @@ canvas {
 	left: 0;
 }
 
-
-
-
 .ingredient-selection {
 	display: grid;
 	grid-template-columns: 36px 1fr 1fr;
 	row-gap: 12px;
 }
+
 .ingredient-selection input {
 	margin: auto;
 }
 
-.ingredient-selection input:checked + label {
+.ingredient-selection input:checked+label {
 	color: black;
 }
 
 .intro h2 {
 	font-size: 2rem;
 }
+
 .food-image {
 	margin-top: 36px;
 }

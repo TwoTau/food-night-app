@@ -1,6 +1,4 @@
-*,
-*:before,
-*:after {
+*, *:before, *:after {
 	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
@@ -11,7 +9,6 @@
 	--accent: #C70039;
 	--accent-dark: #900C3F;
 }
-
 
 body {
 	background: var(--background);
@@ -43,6 +40,7 @@ body {
 .description {
 	text-align: right;
 	margin-left: 65%;
+	margin-right: 32px;
 	margin-top: -100px;
 	color: var(--accent);
 	font-weight: bolder;
@@ -96,13 +94,14 @@ body {
 
 .tinder--card {
 	display: flex;
-	flex-direction: row;
-	width: 150vw;
+	flex-flow: row nowrap;
+	padding: 36px;
+	gap: 36px;
+	border-radius: 54px;
+	width: 90vw;
 	max-width: 1200px;
 	height: 65vh;
-	background: #ffffff;
-	padding-right: 300px;
-	border-radius: 14px;
+	background: var(--accent);
 	overflow: hidden;
 	position: absolute;
 	will-change: transform;
@@ -110,6 +109,7 @@ body {
 	cursor: -webkit-grab;
 	cursor: -moz-grab;
 	cursor: grab;
+	box-shadow: 4.5px -5px 5px -4px rgba(0, 0, 0, 0.1), 12px 4px 14px -4px rgba(0, 0, 0, 0.06), 30px 11px 33px -4px rgba(0, 0, 0, 0.07), 100px 37px 110px -4px rgba(0, 0, 0, 0.07);
 }
 
 .moving.tinder--card {
@@ -119,42 +119,52 @@ body {
 	cursor: grabbing;
 }
 
-.tinder--card div { /* Background image for cards */
-	min-width: 100%;
+.tinder--card div {
+	/* Background image for cards */
+	width: 100%;
 	height: 100%;
-	background-size: cover;
-	background-position: 0px -30px;
 	pointer-events: none;
 	overflow: hidden;
+	border-radius: 36px;
+}
+
+.tinder--card .image-div {
+	width: 170%;
+	background-size: cover;
+	background-position: center;
 	background-repeat: no-repeat;
+}
+
+.tinder--card .text-div {
+	background: var(--background);
+	padding: 32px;
 	text-align: left;
+	max-height: max-content;
+	overflow-y: auto;
 }
 
-.text-div {
-	display: flex;
-	flex-direction: column;
-	margin-left: 20px;
-	margin-top: 30px;
-}
-
-.tinder--card h3 {
-	font-size: 32px;
+.tinder--card h2 {
+	font-size: 2rem;
 	pointer-events: none;
 	max-width: 300px;
 }
-.tinder--card h4 {
+
+.tinder--card h3 {
 	margin-top: 20px;
 	pointer-events: none;
 	max-width: 250px;
-	font-size: 22px;
+	font-size: 2rem;
 	line-height: 110%;
 }
 
 .tinder--card p {
-	margin-top: 24px;
-	font-size: 20px;
+	margin-top: 12px;
 	pointer-events: none;
-	max-width: 250px;
+}
+
+.text-div ul {
+	padding-left: 24px;
+	column-count: 2;
 }
 
 .tinder--buttons {
