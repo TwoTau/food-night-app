@@ -4,6 +4,9 @@ const tinderContainer = document.querySelector('.tinder');
 const nope = document.getElementById('nope');
 const love = document.getElementById('love');
 
+const urlParams = new URLSearchParams(window.location.search);
+const memberName = urlParams.get('member');
+
 let allCards = [];
 addCard().then(() => {
 	initCards();
