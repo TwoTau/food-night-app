@@ -1,0 +1,153 @@
+{"recipes": 
+  [
+    {
+      "recipe_name": "Classic Hamburger",
+      "image_url": "https://imagesvc.meredithcorp.io/v3/jumpstartpure/image?url=https://static.onecms.io/wp-content/uploads/sites/19/2005/06/22/429048911_6152425885001_6152427053001-vs.jpg&w=1280&h=720&q=90&c=cc",
+      "description": "The classic homemade hamburger! Perfectly seasoned, juicy ground beef burgers",
+      "ingredients": [
+        {
+          "name": "Ground beef"
+        },
+        {
+          "name": "Slices of cheese"
+        },
+        {
+          "name": "Lettuce"
+        },
+        {
+          "name": "Tomato"
+        },
+        {
+          "name": "Onion"
+        },
+        {
+          "name": "Burger sauce: ketchup, mustard, mayonnaise"
+        },
+        {
+          "name": "Pickles"
+        },
+        {
+          "name": "Hamburger buns"
+        }
+      ]
+    },
+    {
+      "recipe_name": "Chinese Hot Pot",
+      "image_url": "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2021/03/18/0/FNK_HOT_POT_AT_HOME_OPENER_H_f_s4x3.jpg.rend.hgtvcom.616.493.suffix/1616107469470.jpeg",
+      "description": "A warm, comforting, and social meal to have with close-knit family or friends on a cold day!",
+      "ingredients": [
+        {
+          "name": "Soup base"
+        },
+        {
+          "name": "Napa cabbage"
+        },
+        {
+          "name": "Sliced beef"
+        },
+        {
+          "name": "Enoki/Shiitake mushrooms"
+        },
+        {
+          "name": "Fish balls"
+        },
+        {
+          "name": "Noodles (ramen, udon, glass)"
+        },
+        {
+          "name": "Tofu"
+        },
+        {
+          "name": "Dipping sauce"
+        }
+      ]
+    },      
+    {
+      "recipe_name": "Pasta",
+      "image_url": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/delish-bucatinipasta-028-ls-1607552701.jpg?crop=1.00xw:1.00xh;0,0&resize=640:*",
+      "description": "Take a tour of Italy by making three different types of pasta: bolognese, alfredo, pesto",
+      "ingredients": [
+        {
+          "name": "Bolognese sauce"
+        },
+        {
+          "name": "Alfredo sauce"
+        },
+        {
+          "name": "Pesto sauce"
+        },
+        {
+          "name": "Spaghetti noodles"
+        },
+        {
+          "name": "Penne noodles"
+        },
+        {
+          "name": "Rotini noodes"
+        },
+        {
+          "name": "Garlic bread"
+        },
+        {
+          "name": "Grated cheese"
+        }
+      ]
+    },
+    {
+      "recipe_name": "Shrimp Tacos",
+      "image_url": "https://hips.hearstapps.com/hmg-prod/images/delish-dukes-cilantro-lime-shrimp-tacos-3-1529508777.jpg",
+      "description": "The best shrimp tacos with garlic cilantro lime slaw!",
+      "ingredients": [
+        {
+          "name": "Taco tortillas"
+        },
+        {
+          "name": "Shrimp"
+        },
+        {
+          "name": "Cojita cheese"
+        },
+        {
+          "name": "Cabbage"
+        },
+        {
+          "name": "Cilantro"
+        },
+        {
+          "name": "Limes"
+        },
+        {
+          "name": "Sour cream"
+        },
+        {
+          "name": "Garlic"
+        }
+      ]
+    },
+    {
+      "recipe_name": "Dumplings",
+      "image_url": "https://media.istockphoto.com/photos/japanese-dumplings-gyoza-with-pork-meat-and-vegetables-picture-id1133151212?k=20&m=1133151212&s=612x612&w=0&h=UO9ZhFWOSx9y_ISDp6auBmma3GiQd4yWpMdqo3O2TMo=",
+      "description": "Dumplings! Thin dough encasing a luscious, super flavorful filling is enough to warn you up inside to out",
+      "ingredients": [
+        {
+          "name": "Dumpling wrappers"
+        },
+        {
+          "name": "Ground pork"
+        },
+        {
+          "name": "Napa cabbage"
+        },
+        {
+          "name": "Garlic"
+        },
+        {
+          "name": "Ginger"
+        },
+        {
+          "name": "Mushroom"
+        }
+      ]
+    }       
+  ]
+}
