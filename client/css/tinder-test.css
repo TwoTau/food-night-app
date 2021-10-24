@@ -6,9 +6,18 @@
 	margin: 0;
 }
 
+:root {
+	--background: #FFF7DD;
+	--accent: #C70039;
+	--accent-dark: #900C3F;
+}
+
 body {
-	background: #fef6d9;
-	font-family: sans-serif;
+	background: var(--background);
+	font-family: 'Baloo Da 2', sans-serif;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
 	gap: 0;
 }
 
@@ -103,7 +112,7 @@ body {
 }
 
 .tinder--card h3 {
-	margin-top: 32px;
+	margin-top: 5px;
 	font-size: 32px;
 	padding: 0 16px;
 	pointer-events: none;
@@ -121,7 +130,7 @@ body {
 	text-align: center;
 }
 
-.tinder--buttons button {
+.tinder--buttons-interact {
 	border-radius: 50%;
 	line-height: 60px;
 	width: 60px;
