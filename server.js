@@ -39,6 +39,7 @@ const mail = nodemailer.createTransport({
 app.post('/groupcreation/', (req, res, next) => {
 	const formdata = req.body;
 	for (let member of formdata.members) {
+        console.log(member);
 		member.phone = member.phone.replaceAll("-", "");
 		member.response = [];
 		member.votingCompleted = false;
