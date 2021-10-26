@@ -76,5 +76,5 @@ function showPopUp() {
 
 function hidePopUp() {
 	document.getElementById('pop-up').style.visibility = "hidden";
-	document.getElementByIdnp('pop-up').style.display = "none";
+	document.getElementById('pop-up').style.display = "none";
 }
