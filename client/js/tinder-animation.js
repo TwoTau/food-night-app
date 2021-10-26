@@ -5,7 +5,8 @@ const nope = document.getElementById('nope');
 const love = document.getElementById('love');
 const dietaryRestriction = document.getElementById('dietary-restriction');
 
-const base_url = `https://chicken-tinder-dubhacks.herokuapp.com`;
+const base_url = 'http://chickentinder.tech/';
+// const base_url = `https://chicken-tinder-dubhacks.herokuapp.com`;
 
 const urlParams = new URLSearchParams(window.location.search);
 const memberName = urlParams.get('member');
